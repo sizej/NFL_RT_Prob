@@ -1,25 +1,27 @@
 import pandas as pd 
 import matplotlib.pyplot as plt 
 import numpy as np 
+import datetime as dt 
+from team_dict import team_dict
 
-# plays = pd.read_csv('play_by_play/NFL Play by Play 2009-2018 (v5).csv', nrows=5000)
 
 if __name__ == '__main__':
-    hist = pd.read_csv('historical_results/spreadspoke_scores.csv')
-    hist['point_diff'] = np.absolute(hist['score_home'] - hist['score_away'])
-    
-    # fig, ax = plt.subplots(1,1)
-    # ax.hist(hist['point_diff'], bins = 30)
-    # plt.savefig('allgames.jpeg')
-    # plt.close()    
-    
-    # close_games = hist[hist['spread_favorite'].notna()].copy()
-    # close_games['spread'] = np.absolute(hist['spread_favorite'])
-    # m1 = close_games['spread'] <= 2
-    # fig, ax = plt.subplots(1,1)
-    # ax.hist(close_games['point_diff'][m1], bins = 30)
-    # plt.savefig('closegames.jpeg')
-    # plt.close()
-
-    plays = pd.read_csv('play_by_play/plays_09_18.csv')
-    
+    fname = 'helpers/cols2use.txt'
+    cols = []
+    with open(fname, 'r') as f:
+        for row in f:
+            idx = row.find('\n')
+            cols.append(row[:idx])        
+    plays = pd.read_csv('data/plays_09_18.csv', nrows = 10000, usecols = cols)
+    plays['game_date'] = pd.to_datetime(plays['game_date'])
+    hist = pd.read_csv('data/spreadspoke_scores.csv')
+    hist['schedule_date'] = pd.to_datetime(hist['schedule_date'])
+    m0 = hist['schedule_date'] > plays['game_date'].min()
+    hist['team_home'] = hist['team_home'].map(team_dict)
+    hist['team_away'] = hist['team_away'].map(team_dict)
+    hist.rename(columns = {'schedule_date': 'game_date',
+                            'team_home': 'home_team',
+                            'team_away': 'away_team'}, inplace=True)
+    hist_cols = ['game_date', 'home_team', 'away_team', 'team_favorite_id', 'spread_favorite', 'over_under_line']
+    hist_merge = hist[hist_cols][m0].copy()
+    plays = pd.merge(plays, hist_merge, how = 'left', on = ['game_date','home_team','away_team'])

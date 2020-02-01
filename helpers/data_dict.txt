@@ -1,0 +1,3 @@
+ydsnet = Net yards of drive (could be useful for updated predictions)
+yards_gained = Yards gained/lost on play
+sp = ?
