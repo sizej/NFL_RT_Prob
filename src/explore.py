@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np 
 import datetime as dt 
 from team_dict import team_dict
+from football_func import *
 
 if __name__ == '__main__':
     fname = 'helpers/cols2use.txt'
@@ -25,8 +26,13 @@ if __name__ == '__main__':
     hist_merge = hist[hist_cols][m0].copy()
     plays = pd.merge(plays, hist_merge, how = 'left', on = ['game_date','home_team','away_team'])
     plays['drive_id'] = plays.apply(lambda row: str(row['game_id']) + str(row['drive']), axis = 1)
-    
-
+    plays['pos_TD'] = plays.apply(lambda row: touchdown_det(row['touchdown'], row['td_team'], row['posteam']), axis = 1)
+    plays['pos_FG'] = plays.apply(lambda row: fg_det(row['field_goal_result']), axis = 1)
+    plays['pos_punt'] = plays.apply(lambda row: punt_det(row['play_type']), axis = 1)
+    drive_df = plays.groupby('drive_id').agg({'pos_TD': 'sum',
+                                                'pos_FG': 'sum',
+                                                'pos_punt': 'sum'})
+    drive_df = drive_df.apply(lambda row: other_det(row), axis = 1)
     # drive_df = plays.groupby('drive_id').agg({'sp': 'sum',
     #                                             'field_goal_result': 'sum',
     #                                             'punt_blocked': 'sum',
