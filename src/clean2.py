@@ -77,7 +77,7 @@ if __name__ == '__main__':
     # This df has all plays and how that possession ends.....
     plays = pd.merge(plays, drive_df, how = 'left', left_on = 'drive_id', right_on = 'drive_id').copy()
     p = plays.to_csv('all_plays.csv')
-    s3_client.upload_file(p, b1, 'all_plays_test.csv')
+    s3_client.upload_file('all_plays.csv', b1, 'all_plays_test.csv')
     start = start_possession(plays)
     s = start.to_csv('start_pos.csv')
-    s3_client.upload_file(s, b1, 'start_pos_test.csv')
+    s3_client.upload_file('start_pos.csv', b1, 'start_pos_test.csv')
