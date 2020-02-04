@@ -1,5 +1,7 @@
 import pandas as pd 
 import numpy as np 
+from random import sample 
+import datetime as dt 
 
 def pos_expected_points(row):
     '''
@@ -70,6 +72,24 @@ def start_possession(df):
         first = first.append(drive[c][m2]).copy()
     return first     
 
+def split_data(df):
+    '''
+    Takes in df of plays, splits into training and hold-out sets, based on game date.
+    '''
+    train_mask = df['game_date'] <= dt.datetime(2018, 8, 1)
+    hold_mask = df['game_date'] > dt.datetime(2018, 8, 1)
+    return df[train_mask], df[hold_mask]
+
+def tt_split(df):
+    '''
+    Takes in df and returns train-test split, based on game_id, so an entire game is either in training or test.
+    '''
+    games = df['game_id'].unique()
+    train_idx = sample(games)
+    test_idx = [x for x in games if x not in train_idx]
+    m0 = df['game_id'].isin(train_idx)
+    m1 = df['game_id'].isin(test_idx)
+    return df[m0], df[m1]
 
 if __name__ == '__main__':
     pass

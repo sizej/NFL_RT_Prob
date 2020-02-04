@@ -11,7 +11,7 @@ c1 = 'all_plays.csv'
 
 boto3_conn = boto3.resource('s3')
 s3_client = boto3.client('s3')
-f = s3_client.download_file(b1, c1, c2)
+f = s3_client.download_file(b1, c, c1)
 
 if __name__ == '__main__':
     p = pd.read_csv('all_plays.csv')
