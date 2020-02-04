@@ -1,9 +1,9 @@
 import numpy as np 
-import pandas pd 
+import pandas as pd 
 import matplotlib.pyplot as plt 
 
-def get_pos_starts(c = None)):
-    df = pd.read_csv('data/start_pos.csv', usecols = c)
+def get_pos_starts(c = None):
+    df = pd.read_csv('data/start_pos_test.csv', usecols = c)
     return df
 
 def get_cols():
@@ -17,6 +17,6 @@ def get_cols():
 
 if __name__ == '__main__':
     cols = get_cols()
-    start_df = get_pos_starts(cols)
+    start_df = get_pos_starts(c = cols)
 
 

@@ -1,3 +1,4 @@
+game_id
 game_date
 game_seconds_remaining
 yardline_100

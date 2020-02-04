@@ -22,7 +22,10 @@ if __name__ == '__main__':
     cols = get_cols()
     plays = get_plays_df()
     plays['game_date'] = pd.to_datetime(plays['game_date'])
-    
+    plays['away_team'] = ['JAC' if x == 'JAX' else x for x in plays['away_team']]
+    plays['home_team'] = ['JAC' if x == 'JAX' else x for x in plays['home_team']]
+    plays['posteam'] = ['JAC' if x == 'JAX' else x for x in plays['posteam']]
+    # plays['defteam'] = ['JAC' if x == 'JAX' else x for x in plays['defteam']]
     # Get historical gambling info....
     hist = pd.read_csv('data/spreadspoke_scores.csv')
     hist['schedule_date'] = pd.to_datetime(hist['schedule_date'])
@@ -54,13 +57,13 @@ if __name__ == '__main__':
     plays['play_TD'] = plays.apply(lambda row: touchdown_det(row['touchdown'], row['td_team'], row['posteam']), axis = 1)
     plays['play_FG'] = plays.apply(lambda row: fg_det(row['field_goal_result']), axis = 1)
     plays['play_punt'] = plays.apply(lambda row: punt_det(row['play_type']), axis = 1)
-    drive_df = plays.groupby('drive_id').agg({'play_TD': 'sum',
-                                                'play_FG': 'sum',
-                                                'play_punt': 'sum'}).reset_index()
+    drive_df = plays.groupby('drive_id').agg({'play_TD': 'max',
+                                                'play_FG': 'max',
+                                                'play_punt': 'max'}).reset_index()
     drive_df['pos_other'] = drive_df.apply(lambda row: other_det(row), axis = 1)
     drive_df.columns = ['drive_id', 'ends_TD', 'ends_FG', 'ends_punt', 'ends_other']
     # This df has all plays and how that possession ends.....
     plays = pd.merge(plays, drive_df, how = 'left', left_on = 'drive_id', right_on = 'drive_id').copy()
-    plays.to_csv('data/all_plays.csv')
-    start = start_possession(plays)
-    start.to_csv('data/start_pos.csv')
+    plays.to_csv('data/all_plays2.csv')
+    # start = start_possession(plays)
+    # start.to_csv('data/start_pos.csv')
