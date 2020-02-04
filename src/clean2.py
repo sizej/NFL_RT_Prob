@@ -4,9 +4,25 @@ import numpy as np
 import datetime as dt 
 from team_dict import team_dict
 from football_func import *
+import boto3
+
+
+boto3_conn = boto3.resource('s3')
+s3_client = boto3.client('s3')
+b1 = 'capstone2data'
+c1 = 'plays_09_18.csv'
+c2 = 'plays.csv'
+f = s3_client.download_file(b1, c, c2)
+c1 = 'spreadspoke_scores.csv'
+c2 = 'gamb.csv'
+f = s3_client.download_file(b1, c, c2)
+c1 = 'cols2use.txt'
+c2 = 'cols.txt'
+f = s3_client.download_file(b1, c, c2)
+
 
 def get_cols():
-    fname = 'helpers/cols2use.txt'
+    fname = 'cols.txt'
     cols = []
     with open(fname, 'r') as f:
         for row in f:
@@ -15,7 +31,7 @@ def get_cols():
     return cols
 
 def get_plays_df():       
-    plays = pd.read_csv('data/plays_09_18.csv', usecols = cols)
+    plays = pd.read_csv('plays.csv', usecols = cols)
     return plays
 
 if __name__ == '__main__':
@@ -24,7 +40,7 @@ if __name__ == '__main__':
     plays['game_date'] = pd.to_datetime(plays['game_date'])
     
     # Get historical gambling info....
-    hist = pd.read_csv('data/spreadspoke_scores.csv')
+    hist = pd.read_csv('gamb.csv')
     hist['schedule_date'] = pd.to_datetime(hist['schedule_date'])
     m0 = hist['schedule_date'] >= plays['game_date'].min()
     m1 = hist['schedule_date'] <= plays['game_date'].max()
