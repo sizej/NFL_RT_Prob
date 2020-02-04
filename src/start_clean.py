@@ -6,5 +6,5 @@ from football_func import *
 import boto3
 
 if __name__ == '__main__':
-    p = pd.read_csv('all_plays_test.csv')
+    p = pd.read_csv('all_plays.csv')
     print(p.columns)
