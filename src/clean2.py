@@ -12,13 +12,13 @@ s3_client = boto3.client('s3')
 b1 = 'capstone2data'
 c1 = 'plays_09_18.csv'
 c2 = 'plays.csv'
-f = s3_client.download_file(b1, c, c2)
+f = s3_client.download_file(b1, c1, c2)
 c1 = 'spreadspoke_scores.csv'
 c2 = 'gamb.csv'
-f = s3_client.download_file(b1, c, c2)
+f = s3_client.download_file(b1, c1, c2)
 c1 = 'cols2use.txt'
 c2 = 'cols.txt'
-f = s3_client.download_file(b1, c, c2)
+f = s3_client.download_file(b1, c1, c2)
 
 
 def get_cols():
