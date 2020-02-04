@@ -80,12 +80,13 @@ def split_data(df):
     hold_mask = df['game_date'] > dt.datetime(2018, 8, 1)
     return df[train_mask], df[hold_mask]
 
-def tt_split(df):
+def tt_split(df, prop = 0.8):
     '''
     Takes in df and returns train-test split, based on game_id, so an entire game is either in training or test.
     '''
     games = df['game_id'].unique()
-    train_idx = sample(games)
+    size = int(prop * len(games))
+    train_idx = sample(games, k = size)
     test_idx = [x for x in games if x not in train_idx]
     m0 = df['game_id'].isin(train_idx)
     m1 = df['game_id'].isin(test_idx)

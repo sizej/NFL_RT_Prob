@@ -4,7 +4,7 @@ game_seconds_remaining
 down
 ydstogo
 goal_to_go
-yrdsnet
+ydsnet
 yardline_100
 pos_fave
 posteam_timeouts_remaining
