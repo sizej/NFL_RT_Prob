@@ -2,6 +2,8 @@ game_id
 game_date
 game_seconds_remaining
 yardline_100
+posteam
+home_team
 pos_fave
 posteam_timeouts_remaining
 defteam_timeouts_remaining

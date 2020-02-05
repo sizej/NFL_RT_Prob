@@ -90,7 +90,11 @@ def tt_split(df, prop = 0.8):
     test_idx = [x for x in games if x not in train_idx]
     m0 = df['game_id'].isin(train_idx)
     m1 = df['game_id'].isin(test_idx)
-    return df[m0].copy(), df[m1].copy()
+    df1 = df[m0].copy()
+    df1.drop(['game_id'], axis = 1, inplace = True)
+    df2 = df[m1].copy()
+    df2.drop(['game_id'], axis = 1, inplace = True)
+    return df1, df2
 
 if __name__ == '__main__':
     pass

@@ -129,6 +129,8 @@ if __name__ == '__main__':
     start_pos = get_pos_starts(cols)
     start_pos.drop_duplicates(inplace = True)
     start_pos['game_date'] = pd.to_datetime(start_pos['game_date'])
+    start_pos['pos_home'] = (start_pos['posteam'] == start_pos['home_team']).astype(int)
+    start_pos.drop(['posteam', 'home_team'], axis = 1, inplace = True)
     start_train, start_hold = split_data(start_pos)
     start_train.to_csv('data/start_pos_train.csv')
     start_hold.to_csv('data/start_pos_holdout.csv')
