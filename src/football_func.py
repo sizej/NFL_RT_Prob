@@ -84,7 +84,7 @@ def tt_split(df, prop = 0.8):
     '''
     Takes in df and returns train-test split, based on game_id, so an entire game is either in training or test.
     '''
-    games = df['game_id'].unique()
+    games = set(df['game_id'].unique())
     size = int(prop * len(games))
     train_idx = sample(games, k = size)
     test_idx = [x for x in games if x not in train_idx]
