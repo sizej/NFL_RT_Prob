@@ -20,6 +20,22 @@ def plot_feat_imp(idx, features, feat_importances,  n = 5):
     plt.tight_layout(pad = 1)
     plt.savefig('images/rf_feat_imp.jpeg')
 
+def guesser(probs, max_thresh = 0.6, diff_thresh = 0.03):
+    '''
+    Returns a guess that is (sometimes) different from max.
+    '''
+    guesses = []
+    for p in probs:
+        idx = np.argsort(p)[::-1]
+        diffs = np.max(p) - p
+        if max(p) >= max_thresh:
+            guesses.append(idx[0])
+        else:
+            options = p[np.where(diffs <= diff_thresh)]
+            guess = np.random.choice(options)
+            guesses.append(np.where(p == guess)[0][0])
+    return guesses
+
 if __name__ == '__main__':
     start = pd.read_csv('data/start_pos_train.csv')
     start = remove_na_yardline(start)
