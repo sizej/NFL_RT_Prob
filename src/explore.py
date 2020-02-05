@@ -128,6 +128,12 @@ if __name__ == '__main__':
     cols = get_cols_start()
     start_pos = get_pos_starts(cols)
     start_pos.drop_duplicates(inplace = True)
+    start_pos['game_date'] = pd.to_datetime(start_pos['game_date'])
+    start_train, start_hold = split_data(start_pos)
+    start_train.to_csv('data/start_pos_train.csv')
+    start_hold.to_csv('data/start_pos_holdout.csv')
+    del(start_hold)
+    start_pos = start_train.copy()
     
     # scatter plot of yards to go and outcome
     fig, ax = plt.subplots(1,1, figsize = (10, 5))
