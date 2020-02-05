@@ -15,6 +15,16 @@ For the most part the game situation data is from the plays dataset and the team
 
 To reduce data leakage, I used the 2009 - 2017 seasons as my training data and the 2018 season as my hold-out data for validation.
 
+## The Features
+
+Something about the features here....
+
+Features engineered:
+- Expected Points
+- Pace
+- Possessing team is home team
+- Possessing team is favorite
+
 ## EDA
 
 For the start of possession analysis
@@ -28,13 +38,19 @@ Pie Chart of outcomes in the data
 
 ### Logistic Regression
 
-Able to achieve 50.5% accuracy. Describe the model. Find some charts that go with LogReg.
+Able to achieve 50.5% accuracy on test - 48.5% on hold-out. Describe the model. Find some charts that go with LogReg.
 
 ### Naive Bayes
 
 ### MLP
 
 ### Random Forest 
+
+Able to achieve 51.5% test, 50.2% hold-out
+
+### Adaboost Classifier
+
+51.4% test, 49.8% hold-out
 
 ## Conclusions
 

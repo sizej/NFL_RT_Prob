@@ -95,6 +95,37 @@ def tt_split(df, prop = 0.8):
     df2 = df[m1].copy()
     df2.drop(['game_id'], axis = 1, inplace = True)
     return df1, df2
+ 
+ 
+def make_target(row):
+    '''
+    Convert target columns into single label column.
+    '''
+    if row['ends_TD'] == 1:
+        return 'TD'
+    elif row['ends_FG'] == 1:
+        return 'FG'
+    elif row['ends_punt'] == 1:
+        return 'punt'
+    else:
+        return 'other'
 
+def end_of_half_det(row):
+    '''
+    Binary flag for possessions starting w/in the last two minutes of half.
+    '''
+    if (1800 <= row['game_seconds_remaining'] <= 1920) or row['game_seconds_remaining'] <= 120:
+        return 1
+    else:
+        return 0
+
+def remove_na_yardline(df):
+    '''
+    Very few yardlines are missing - exclude them.
+    '''
+    m0 = df['yardline_100'].notna()
+    return df[m0].copy()
+
+    
 if __name__ == '__main__':
     pass
