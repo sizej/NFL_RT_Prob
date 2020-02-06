@@ -1,5 +1,5 @@
 game_id
 play_id
-pos_pp_cume_yards
+pos_pp_cume_yds
 pos_play_count
-pos_yds_plays
+pos_yds_play

@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np 
 from random import sample 
 import datetime as dt 
+import matplotlib.pyplot as plt 
 
 def pos_expected_points(row):
     '''
@@ -127,7 +128,7 @@ def remove_na_yardline(df):
     return df[m0].copy()
 
 
-def plot_feat_imp(idx, features, feat_importances,  n = 5, fname = 'images/test.jpeg':
+def plot_feat_imp(idx, features, feat_importances,  n = 5, fname = 'images/test.jpeg'):
     '''
     Plot the top n features.
     '''
