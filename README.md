@@ -44,6 +44,8 @@ Able to achieve 50.5% accuracy on test - 48.5% on hold-out. Describe the model. 
 
 ### MLP
 
+52.0% of validating, 50.4% on hold-out
+
 ### Random Forest 
 
 Able to achieve 51.5% test, 50.2% hold-out
