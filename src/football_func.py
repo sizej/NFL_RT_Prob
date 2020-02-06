@@ -126,6 +126,41 @@ def remove_na_yardline(df):
     m0 = df['yardline_100'].notna()
     return df[m0].copy()
 
-    
+
+def plot_feat_imp(idx, features, feat_importances,  n = 5, fname = 'images/test.jpeg':
+    '''
+    Plot the top n features.
+    '''
+    labels = np.array(features)[idx[:n]]
+    fig, ax = plt.subplots(1,1, figsize = (10,5))
+    ax.barh(range(n), feat_importances[idx[:n]], color = 'b', alpha = 0.85)
+    # ax.set_xticklabels(labels)
+    ax.set_title('Feature Importance')
+    plt.yticks(ticks = range(n), labels = labels)
+    plt.tight_layout(pad = 1)
+    plt.savefig(fname)
+
+def get_pos_starts(c = None):
+    df = pd.read_csv('data/start_pos2_s3.csv', usecols = c)
+    return df
+
+def get_cols_start():
+    fname = 'helpers/start_pos_cols.txt'
+    cols = []
+    with open(fname, 'r') as f:
+        for row in f:
+            idx = row.find('\n')
+            cols.append(row[:idx])
+    return cols
+
+def get_cols_merge():
+    fname = 'helpers/cols_merge.txt'
+    cols = []
+    with open(fname, 'r') as f:
+        for row in f:
+            idx = row.find('\n')
+            cols.append(row[:idx])
+    return cols
+
 if __name__ == '__main__':
     pass
