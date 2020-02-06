@@ -29,7 +29,7 @@ if __name__ == '__main__':
     val['target'] = val.apply(lambda row: make_target(row), axis = 1)
     val['target_num'] = val['target'].map(target_dict)
     val['is_EOH'] = val.apply(lambda row: end_of_half_det(row), axis = 1)
-    val['pos_leads'] = (val['posteam_score'] > val['defteam_score']).astype(int)
+    # val['pos_leads'] = (val['posteam_score'] > val['defteam_score']).astype(int)
     # val['game_date'] = pd.to_datetime(val['game_date'])
     # val['month'] = [x.month for x in val['game_date']]
     # val = pd.concat([val, pd.get_dummies(val['month'], prefix = 'month_is')], axis = 1).copy()

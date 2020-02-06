@@ -42,6 +42,10 @@ Able to achieve 50.5% accuracy on test - 48.5% on hold-out. Describe the model. 
 
 ### Naive Bayes
 
+46.8% to start - gave up on it quick - clear that my issue is two-fold:
+1. I've reached the limit of what is predictable, given this set of features.
+2. There is a lot of randomness is this data, which makes it challenging to predict.
+
 ### MLP
 
 52.0% of validating, 50.4% on hold-out
@@ -53,6 +57,8 @@ Able to achieve 51.5% test, 50.2% hold-out
 ### Adaboost Classifier
 
 51.4% test, 49.8% hold-out
+
+### Beat the Machine
 
 ## Conclusions
 
