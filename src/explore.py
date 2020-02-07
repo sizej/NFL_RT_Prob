@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from football_func import *
 from random import sample
 from team_dict import team_dict
+import datetime as dt
 
 plt.style.use('fivethirtyeight')
 
@@ -79,7 +80,7 @@ def plot_fave_totals(df):
     ax.plot(df['fave_EP'], df['fave_EP'], linestyle = '--', linewidth = 1, color = 'r', alpha = 0.75)
     ax.set_ylabel('Actual')
     ax.set_xlabel('Expected')
-    ax.set_title('Actual v Expected Point -- Favorites')
+    ax.set_title('Actual v Expected Points -- Favorites')
     plt.tight_layout(pad = 1)
     plt.savefig('images/favorites_points.jpeg')
     plt.close()
@@ -93,7 +94,7 @@ def plot_dawg_totals(df):
     ax.plot(df['dawg_EP'], df['dawg_EP'], linestyle = '--', linewidth = 1, color = 'r', alpha = 0.75)
     ax.set_ylabel('Actual')
     ax.set_xlabel('Expected')
-    ax.set_title('Actual v Expected Point -- Underdawgs')
+    ax.set_title('Actual v Expected Points -- Underdawgs')
     plt.tight_layout(pad = 1)
     plt.savefig('images/dawgs_points.jpeg')
     plt.close()
@@ -189,7 +190,7 @@ if __name__ == '__main__':
     plt.savefig('images/outcome_by_time.jpeg')
     plt.close()
 
-    hist = pd.read_csv('data/spreadspoke_scores.csv')
+    hist = pd.read_csv('data/Archive/spreadspoke_scores.csv')
     hist['schedule_date'] = pd.to_datetime(hist['schedule_date'])
     m0 = hist['schedule_date'] >= plays['game_date'].min()
     m1 = hist['schedule_date'] <= plays['game_date'].max()

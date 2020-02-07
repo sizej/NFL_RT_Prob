@@ -6,10 +6,12 @@ The goal of this project is to attempt to predict the outcome of a possession in
 
 ## The Data
 
-The data used for this analysis comes from two Kaggle datasets (found [here](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016) and [here](https://www.kaggle.com/tobycrabtree/nfl-scores-and-betting-data#spreadspoke_scores.csv)). The first dataset is every play in the NFL from 2009 to 2019. It contains ~450k plays with 255 different features. The second dataset contains historical information about NFL games all the way back to 1966. It has some ~12,500 games with 17 features detailing the games. From both datasets, the most important features for this analysis are the ones we can know before the start of a possession.
+The data used for this analysis comes from two Kaggle datasets (found [here](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016) and [here](https://www.kaggle.com/tobycrabtree/nfl-scores-and-betting-data#spreadspoke_scores.csv)). The first dataset contains every play in the NFL from 2009 through the 2018 season. It contains ~64k possessions composed of ~450k plays each with 255 different features. The second dataset contains historical information about NFL games all the way back to 1966. It has ~12,500 games with 17 features detailing the game locations, teams, outcomes, etc. 
+
+From both datasets, the most important features for this analysis are the ones we can know before the start of a possession.
 
 - Game Situation - Distance to the end zone, score, time left in the game, possessing team is home team, etc.
-- Team v Opponent - Relative strength, expected points in game, leading or trailing, possessing team is favorite, etc.
+- Team v Opponent - Relative strength (as captured by betting line/spread), expected points in game, leading or trailing, possessing team is favorite, etc.
 
 For the most part the game situation data is from the plays dataset and the team v opponent data is from the historical gambling set.
 
@@ -17,14 +19,16 @@ To minimize data leakage, I used the 2009 - 2017 seasons as my training data and
 
 ![](images/season_total.jpeg)
 
+Though there is a slight uptick in scoring in 2018, it doesn't appear to be anything substantial.
+
 ## The Features
 
-**Features from datasets**
+**Features from datasets:**
 
 | **Feature** | **Type** | **Description** |
 | --- | --- | --- |
 | yardline_100 | int | The distance from the end zone to start the possession. |
-| game_seconds_remaining | int | Total seconds remaining in the game (3600 seconds in game). |
+| game_seconds_remaining | int | Total seconds remaining in the game (3600 seconds in a game). |
 | posteam_score | int | Possessing team score. |
 | defteam_score | int | Defensive team score. |
 | posteam_timeouts_remaining | int | Possessing team timeouts (3 per half). |
@@ -57,9 +61,9 @@ There is a lot of co-linearity amongst these features (as several as just linear
 
 Exploring the data, I found some fairly obvious relationships exist between the prevalance of scoring and expected scoring.
 
-![](images/actual_total.jpeg))
+![](images/actual_total.jpeg)
 
-Surprise! Games expected to have a more of points, generally have more points!
+**Surprise!** Games expected to have a more of points, generally have more points!
 
 ![](images/favorites_points.jpeg)
 
@@ -67,7 +71,7 @@ Interestingly, favorites appear to underperform expectation....
 
 ![](images/dawgs_points.jpeg)
 
-But, so do underdogs. Seems like Vegas might know something about human behavior (it's way less fun to bet the under).
+But, so do underdogs. Seems like Vegas might know something about human behavior (*hint: it's way less fun to bet the under*).....
 
 There are also some interesting relationships between time and field position and the outcome of a possession.
 
@@ -85,7 +89,7 @@ Most of the noteworthy information here is in the last parts of each half. If a 
 
 ## Predicting Outcomes
 
-Possession outcomes are pretty random and don't necessarily lend themselves well to prediction. Random chance would guess correctly about 25% of the time, but since our outcomes are not uniformly distributed, our baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.6% of the time (in our training data). Of the 60k possesions, the breakdown of outcomes is:
+Possession outcomes are pretty random and don't necessarily lend themselves well to prediction. Random chance would guess correctly about 25% of the time, but since our outcomes are not uniformly distributed, our baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.6% of the time (in our training data). Of the ~58k training possesions, the breakdown of outcomes is:
 
 | **TD** | **FG** | **Punt** | **Other** |
 | --- | --- | --- | --- | 
@@ -104,6 +108,9 @@ Possession outcomes are pretty random and don't necessarily lend themselves well
 | AdaBoost Classifier | 51.4% | 49.8% |
 | MLP | 52.0% | 50.4% |
 | Naive Bayes | 46.8% | You get the idea....|
+| Random Forest (Gen2) | 50.7% | 49.4% |
+
+I tried all the models, but what I found was that the issue is not a question of which model I chose to throw at the data, but the features I chose to throw at the models. 
 
 ## Random Forest
 
@@ -119,11 +126,11 @@ Random Forests performed almost as well as the MLP model and have the bonus of m
 
 ![](images/rf2.jpeg)
 
-This change resulted in a degradation of performance (down to 49.4%), but the feature importances were slightly different.
+The additional features resulted in a slight degradation of performance (down to 49.4%), but the new features were able to pop into the top 7. This didn't immediately make sense to me, and it's something I'd like to look into for future work.
 
 ## People: Not as smart as trees.....(or computers)
 
-To really understand how impressive an accuracy of over 50% is, I put some humans to the test. I gave some of our classmates 100 randomly sampled possessions, giving them only the same information as I gave the machine. The names of the participants have been changed to protect the innocent
+To really understand whether or not it's impressive for the machine to get an accuracy of over 50%, I put some humans to the test. I gave some of our classmates 100 randomly sampled possessions, giving them only the same information as I gave the machine. *The names of the participants have been changed to protect the innocent.*
 
 | **Name** | **Accuracy** |
 | --- | --- |
@@ -132,13 +139,13 @@ To really understand how impressive an accuracy of over 50% is, I put some human
 | Gallison | 24% |
 | **Dohn** | **47%** |
 | Gatherer | 44% |
-| Unabel | 38.%% |
+| Unabel | 38%% |
 
-Turns out, 50.4% is pretty good!
+Turns out, 50.4% is pretty good - at least compared to us!
 
 ## Conclusions
 
-It is incredibly difficult to predict the outcome of a possession at the start of it (at least it is difficult for all possession - even if there are certain types that are easy). Fortunately for me, this ia good thing.
+It is incredibly difficult to predict the outcome of a possession at the start of it (at least it is difficult for all possession - even if there are certain types that are easy). Fortunately for me, this is good thing. The randomness of the outcomes makes for a more compelling and fun experience trying to predict what will happen.
 
 ## Future Work
 - Try reducing the history/training set - more heavily weighting the more recent information.
