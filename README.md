@@ -36,7 +36,6 @@ Though there is a slight uptick in scoring in 2018, it doesn't appear to be anyt
 | spread | float | The point spread on the game. |
 | total | float | The over-under line for the game. |
 
-
 **Features engineered:**
 
 | **Feature** | **Type** | **Description** |
@@ -55,7 +54,7 @@ Though there is a slight uptick in scoring in 2018, it doesn't appear to be anyt
 | pos_play_count | int | Count of possessing team plays run in the game to the start of the possession. |
 | pos_yds_play | int | Yards per play for possessing team in the game to the start of the possession. |
 
-There is a lot of co-linearity amongst these features (as several as just linear functions of others), but since we are only concerned with predictive prowess (and not intepretability), I didn't do much to suppress it.
+There is a lot of co-linearity amongst these features (as several as just linear functions of others), but since I am only concerned with predictive prowess (and not intepretability), I didn't do much to suppress it.
 
 ## EDA
 
@@ -89,7 +88,7 @@ Most of the noteworthy information here is in the last parts of each half. If a 
 
 ## Predicting Outcomes
 
-Possession outcomes are pretty random and don't necessarily lend themselves well to prediction. Random chance would guess correctly about 25% of the time, but since our outcomes are not uniformly distributed, our baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.6% of the time (in our training data). Of the ~58k training possesions, the breakdown of outcomes is:
+Possession outcomes are pretty random and don't necessarily lend themselves well to prediction. Random chance would guess correctly about 25% of the time, but since our outcomes are not uniformly distributed, the baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.6% of the time (in the training data). Of the ~58k training possesions, the breakdown of outcomes is:
 
 | **TD** | **FG** | **Punt** | **Other** |
 | --- | --- | --- | --- | 
@@ -126,11 +125,18 @@ Random Forests performed almost as well as the MLP model and have the bonus of m
 
 ![](images/rf2.jpeg)
 
-The additional features resulted in a slight degradation of performance (down to 49.4%), but the new features were able to pop into the top 7. This didn't immediately make sense to me, and it's something I'd like to look into for future work.
+| **Outcome** | **Precision** | **Recall** |
+| --- | --- | --- |
+| FG | 0.39 | 0.07 |
+| TD | 0.41 | 0.23 |
+| Punt | 0.48 | 0.86 |
+| Other | 0.61 | 0.42 |
+
+The additional features resulted in a slight degradation of performance (down to 49.4%), but the new features were able to pop into the top 7. This didn't immediately make sense to me, and it's something I'd like to look into for future work. Further, I think understanding/creating partial dependence charts could help illuminate the interaction of the features and the outcomes.
 
 ## People: Not as smart as trees.....(or computers)
 
-To really understand whether or not it's impressive for the machine to get an accuracy of over 50%, I put some humans to the test. I gave some of our classmates 100 randomly sampled possessions, giving them only the same information as I gave the machine. *The names of the participants have been changed to protect the innocent.*
+To really understand whether or not it's impressive for the machine to get an accuracy of over 50%, I put some humans to the test. I gave some of our classmates 100 randomly sampled possessions, giving them only the same information as I gave the machine. *The names of the participants have been changed to protect their identities.*
 
 | **Name** | **Accuracy** |
 | --- | --- |
@@ -145,8 +151,9 @@ Turns out, 50.4% is pretty good - at least compared to us!
 
 ## Conclusions
 
-It is incredibly difficult to predict the outcome of a possession at the start of it (at least it is difficult for all possession - even if there are certain types that are easy). Fortunately for me, this is good thing. The randomness of the outcomes makes for a more compelling and fun experience trying to predict what will happen.
+It is incredibly difficult to predict the outcome of a possession at the start of it (at least it is difficult for all possessions - even if there are certain types that are seemingly easy). Fortunately for me, this is good thing. The randomness of the outcomes makes for a more compelling and fun experience trying to predict what will happen.
 
 ## Future Work
 - Try reducing the history/training set - more heavily weighting the more recent information.
 - Develop step-through probability model for all plays. One of the ways in which we can evaluate the quality of the probabilities we get for the start of the possession is to step-through a possession (or a series), starting with these values and see how a model does with more information.
+- Given the unbalanced nature of the training data (and the validation data, too), I'm curious about other ways of stratifying the data that might give the models a better chance at guessing the drives that might end in scores.
