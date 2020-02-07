@@ -2,7 +2,7 @@
 
 ## Introduction
 
-I thought it'd be neat to calculate the probability of different outcomes at the beginning of a possession for an NFL team.
+The goal of this project is to attempt to predict the outcome of a possession in an NFL game, based only on information available at the start of the possession. For the purposes of this analysis, possessions can end in one of four ways - the possessing team will score a TD, successfully kick a FG, attempt a punt (blocks are included in this outcome), or other (anything else that happens - e.g. end of half/game, turnover on downs, fumble lost, safety, etc.) 
 
 ## The Data
 
@@ -13,53 +13,134 @@ The data used for this analysis comes from two Kaggle datasets (found (here - li
 
 For the most part the game situation data is from the plays dataset and the team v opponent data is from the historical gambling set.
 
-To reduce data leakage, I used the 2009 - 2017 seasons as my training data and the 2018 season as my hold-out data for validation.
+To minimize data leakage, I used the 2009 - 2017 seasons as my training data and the 2018 season as my hold-out data for validation. To make sure this approach didn't run up against some sort of trend in scoring, I looked at season over season scoring totals. 
+
+![](images/season_total.jpeg)
 
 ## The Features
 
-Something about the features here....
+**Features from datasets**
 
-Features engineered:
-- Expected Points
-- Pace
-- Possessing team is home team
-- Possessing team is favorite
+| **Feature** | **Type** | **Description** |
+| --- | --- | --- |
+| yardline_100 | int | The distance from the end zone to start the possession. |
+| game_seconds_remaining | int | Total seconds remaining in the game (3600 seconds in game). |
+| posteam_score | int | Possessing team score. |
+| defteam_score | int | Defensive team score. |
+| posteam_timeouts_remaining | int | Possessing team timeouts (3 per half). |
+| defteam_timeouts_remaining | int | Defensive team timeouts (3 per half). |
+| spread | float | The point spread on the game. |
+| total | float | The over-under line for the game. |
+
+
+**Features engineered:**
+
+| **Feature** | **Type** | **Description** |
+| --- | --- | --- |
+| pos_fave | bool | Whether or not the possessing team is the favorite. |
+| pos_home | bool | Whether or not the possessing team is the home team. |
+| is_EOH | bool | Whether or not the possession starts in the last two minutes of either half. |
+| pos_EP_total | float | Based on the spread and total, the possessing team's expected points for the game. |
+| def_EP_total | float | Based on the spread and total, the defensive team's expected points for the game. |
+| pos_EP_pace | float | The possessing team's progress against their expected points (expected points * percent of game elapsed). Positive figures mean the team is ahead of expectation, negative means behind. |
+| def_EP_pace | float | The possessing team's progress against their expected points (expected points * percent of game elapsed). Positive figures mean the team is ahead of expectation, negative means behind. |
+| def_EP_total | float | Based on the spread and total, the defensive team's expected points for the game. |
+| posteam_timeouts_remaining | int | Possessing team timeouts (3 per half). |
+| defteam_timeouts_remaining | int | Defensive team timeouts (3 per half). |
+| pos_pp_cume_yards | int | Possessing team cumulative yards gained in the game to the start of the possession. |
+| pos_play_count | int | Count of possessing team plays run in the game to the start of the possession. |
+| pos_yds_play | int | Yards per play for possessing team in the game to the start of the possession. |
+
+There is a lot of co-linearity amongst these features (as several as just linear functions of others), but since we are only concerned with predictive prowess (and not intepretability), I didn't do much to suppress it.
 
 ## EDA
 
-For the start of possession analysis
+Exploring the data, I found some fairly obvious relationships exist between the prevalance of scoring and expected scoring.
+
+![](images/actual_total.jpeg))
+
+Surprise! Games expected to have a more of points, generally have more points!
+
+![](images/favorites_points.jpeg)
+
+Interestingly, favorites appear to underperform expectation....
+
+![](images/dawgs_points.jpeg)
+
+But, so do underdogs. Seems like Vegas might know something about human behavior (it's way less fun to bet the under).
+
+There are also some interesting relationships between time and field position and the outcome of a possession.
+
+![](images/start_pos_scatter.jpeg)
+
+Somewhat obviously, the further you start from the end zone, the more likely you are to punt. The bright orange lines at the 20 and 25 are touchbacks (the touchback rule was changed in 2016).
+
+![](images/all_yards_scattter.jpeg)
+
+This is the same kind of plot, but this time including all plays (not just the start of possessions).
+
+![](images/outcome_by_time.jpeg)
+
+Most of the noteworthy information here is in the last parts of each half. If a team takes possession very near the end of a half, the 'other' outcome becomes more likely than at other times.
 
 ## Predicting Outcomes
 
-Our baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.8% of the time (in our training data).
+Our baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.6% of the time (in our training data). Of the 60k possesions, the breakdown of outcomes is:
+
+| **TD** | **FG** | **Punt** | **Other** |
+| --- | --- | --- | --- | 
+| 19.7% | 13.9% | 40.6% | 25.8% |
+
 
 # OOPS, I DID IT AGAIN.....
 Pie Chart of outcomes in the data
 
-### Logistic Regression
 
-Able to achieve 50.5% accuracy on test - 48.5% on hold-out. Describe the model. Find some charts that go with LogReg.
+## The Models...
 
-### Naive Bayes
+| **Model** | **Test Accuracy** | **Hold-out Accuracy** |
+| --- | --- | --- |
+| Logistic Regression | 50.5% | 48.5% |
+| Random Forest (Gen1) | 51.5% | 50.2% |
+| AdaBoost Classifier | 51.4% | 49.8% |
+| MLP | 52.0% | 50.4% |
+| Naive Bayes | 46.8% | You get the idea....|
 
-46.8% to start - gave up on it quick - clear that my issue is two-fold:
-1. I've reached the limit of what is predictable, given this set of features.
-2. There is a lot of randomness is this data, which makes it challenging to predict.
+## Random Forest
 
-### MLP
+Random Forests performed almost as well as the MLP model, but have the bonus of mild interpretability. 
 
-52.0% of validating, 50.4% on hold-out
+**1st Generation**
 
-### Random Forest 
+![](images/rf_feat_imp.jpeg)
 
-Able to achieve 51.5% test, 50.2% hold-out
+**2nd Generation**
 
-### Adaboost Classifier
+*2nd generation included additional features - yards gained, plays run, and yards per play.
 
-51.4% test, 49.8% hold-out
+![](images/rf2.jpeg)
 
-### Beat the Machine
+This change resulted in a degradation of performance (down to 49.4%), but the feature importances were slightly different.
+
+## People: Not as smart as trees.....
+
+To really understand how impressive an accuracy of over 50% is, I put some humans to the test. I gave some of our classmates 100 randomly sampled possessions, giving them only the same information as I gave the machine. The names of the participants have been changed to protect the innocent
+
+| **Name** | **Accuracy** |
+| --- | --- |
+| Ike | 44%|
+| Tody | 29% |
+| Gallison | 24% |
+| **Dohn** | **47%** |
+| Gatherer | 44% |
+| Unabel | 38.%% |
+
+Turns out, 50.4% is pretty good!
 
 ## Conclusions
 
+It is incredibly difficult to predict the outcome of a possession at the start of it (at least it is difficult for all possession - even if there are certain types that are easy). Fortunately for me, this ia good thing.
+
 ## Future Work
+- Try reducing the history/training set - more heavily weighting the more recent informatio
+- Develop step-through probability model for all plays
