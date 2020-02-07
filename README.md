@@ -6,7 +6,7 @@ The goal of this project is to attempt to predict the outcome of a possession in
 
 ## The Data
 
-The data used for this analysis comes from two Kaggle datasets (found [here[ (https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016) and [here] (https://www.kaggle.com/tobycrabtree/nfl-scores-and-betting-data#spreadspoke_scores.csv)). The first dataset is every play in the NFL from 2009 to 2019. It contains ~450k plays with 255 different features. The second dataset contains historical information about NFL games all the way back to 1966. It has some ~12,500 games with 17 features detailing the games. From both datasets, the most important features for this analysis are the ones we can know before the start of a possession.
+The data used for this analysis comes from two Kaggle datasets (found [here](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016) and [here](https://www.kaggle.com/tobycrabtree/nfl-scores-and-betting-data#spreadspoke_scores.csv)). The first dataset is every play in the NFL from 2009 to 2019. It contains ~450k plays with 255 different features. The second dataset contains historical information about NFL games all the way back to 1966. It has some ~12,500 games with 17 features detailing the games. From both datasets, the most important features for this analysis are the ones we can know before the start of a possession.
 
 - Game Situation - Distance to the end zone, score, time left in the game, possessing team is home team, etc.
 - Team v Opponent - Relative strength, expected points in game, leading or trailing, possessing team is favorite, etc.
