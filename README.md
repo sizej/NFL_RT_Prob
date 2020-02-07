@@ -6,16 +6,14 @@ The goal of this project is to attempt to predict the outcome of a possession in
 
 ## The Data
 
-The data used for this analysis comes from two Kaggle datasets (found [here](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016) and [here](https://www.kaggle.com/tobycrabtree/nfl-scores-and-betting-data#spreadspoke_scores.csv)). The first dataset contains every play in the NFL from 2009 through the 2018 season. It contains ~64k possessions composed of ~450k plays each with 255 different features. The second dataset contains historical information about NFL games all the way back to 1966. It has ~12,500 games with 17 features detailing the game locations, teams, outcomes, etc. 
+The data used for this analysis comes from two Kaggle datasets (found [here](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016) and [here](https://www.kaggle.com/tobycrabtree/nfl-scores-and-betting-data#spreadspoke_scores.csv)). The first dataset contains every play in the NFL from 2009 through the 2018 season. It contains ~64k possessions composed of ~450k plays each with 255 different features. The second dataset contains historical information about NFL games all the way back to 1966. It has ~12,500 games with 17 features detailing game locations, teams, outcomes, etc. 
 
 From both datasets, the most important features for this analysis are the ones we can know before the start of a possession.
 
 - Game Situation - Distance to the end zone, score, time left in the game, possessing team is home team, etc.
 - Team v Opponent - Relative strength (as captured by betting line/spread), expected points in game, leading or trailing, possessing team is favorite, etc.
 
-For the most part the game situation data is from the plays dataset and the team v opponent data is from the historical gambling set.
-
-I choose to leave out some information - like team name - because year over year, teams change quite a bit, and there is no guarantee that a team in my holdout data will resemble the team in my training data. For example, from 2009-2018, the Broncos had 8 starting quarterbacks - from Peyton Manning to Paxton Lynch. The performance of a team can (and does) vary greatly year over year, so I decided to exclude that information (as well as other information like it).
+For the most part the game situation data is from the plays dataset and the team v opponent data is from the historical gambling set.I choose to leave out some information - like team name - because year over year, teams change quite a bit, and there is no guarantee that a team in my holdout data will resemble the team in my training data. For example, from 2009-2018, the Broncos had 8 starting quarterbacks - from Peyton Manning to Paxton Lynch. The performance of a team can (and does) vary greatly year over year, so I decided to exclude that information (as well as other information like it).
 
 To minimize data leakage, I used the 2009 - 2017 seasons as my training data and the 2018 season as my hold-out data for validation. To make sure this approach didn't run up against some sort of trend in scoring, I looked at season over season scoring totals. 
 
