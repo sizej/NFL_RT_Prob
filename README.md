@@ -98,7 +98,7 @@ Possession outcomes are pretty random and don't necessarily lend themselves well
 
 ![](images/test.jpeg)
 
-## The Models...
+## The Models
 
 | **Model** | **Test Accuracy** | **Hold-out Accuracy** |
 | --- | --- | --- |
