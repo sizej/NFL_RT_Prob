@@ -85,16 +85,15 @@ Most of the noteworthy information here is in the last parts of each half. If a 
 
 ## Predicting Outcomes
 
-Our baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.6% of the time (in our training data). Of the 60k possesions, the breakdown of outcomes is:
+Possession outcomes are pretty random and don't necessarily lend themselves well to prediction. Random chance would guess correctly about 25% of the time, but since our outcomes are not uniformly distributed, our baseline for a prediction model is to predict that every possession would result in a punt, which occurs 40.6% of the time (in our training data). Of the 60k possesions, the breakdown of outcomes is:
 
 | **TD** | **FG** | **Punt** | **Other** |
 | --- | --- | --- | --- | 
-| 19.7% | 13.9% | 40.6% | 25.8% |
-
+| 19.5% | 13.9% | 40.8% | 25.8% |
 
 # OOPS, I DID IT AGAIN.....
-Pie Chart of outcomes in the data
 
+![](images/test.jpeg)
 
 ## The Models...
 
@@ -108,7 +107,7 @@ Pie Chart of outcomes in the data
 
 ## Random Forest
 
-Random Forests performed almost as well as the MLP model, but have the bonus of mild interpretability. 
+Random Forests performed almost as well as the MLP model and have the bonus of moderate interpretability. 
 
 **1st Generation**
 
@@ -122,7 +121,7 @@ Random Forests performed almost as well as the MLP model, but have the bonus of 
 
 This change resulted in a degradation of performance (down to 49.4%), but the feature importances were slightly different.
 
-## People: Not as smart as trees.....
+## People: Not as smart as trees.....(or computers)
 
 To really understand how impressive an accuracy of over 50% is, I put some humans to the test. I gave some of our classmates 100 randomly sampled possessions, giving them only the same information as I gave the machine. The names of the participants have been changed to protect the innocent
 
@@ -142,5 +141,5 @@ Turns out, 50.4% is pretty good!
 It is incredibly difficult to predict the outcome of a possession at the start of it (at least it is difficult for all possession - even if there are certain types that are easy). Fortunately for me, this ia good thing.
 
 ## Future Work
-- Try reducing the history/training set - more heavily weighting the more recent informatio
-- Develop step-through probability model for all plays
+- Try reducing the history/training set - more heavily weighting the more recent information.
+- Develop step-through probability model for all plays. One of the ways in which we can evaluate the quality of the probabilities we get for the start of the possession is to step-through a possession (or a series), starting with these values and see how a model does with more information.
