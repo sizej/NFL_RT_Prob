@@ -15,6 +15,8 @@ From both datasets, the most important features for this analysis are the ones w
 
 For the most part the game situation data is from the plays dataset and the team v opponent data is from the historical gambling set.
 
+I choose to leave out some information - like team name - because year over year, teams change quite a bit, and there is no guarantee that a team in my holdout data will resemble the team in my training data. For example, from 2009-2018, the Broncos had 8 starting quarterbacks - from Peyton Manning to Paxton Lynch. The performance of a team can (and does) vary greatly year over year, so I decided to exclude that information (as well as other information like it).
+
 To minimize data leakage, I used the 2009 - 2017 seasons as my training data and the 2018 season as my hold-out data for validation. To make sure this approach didn't run up against some sort of trend in scoring, I looked at season over season scoring totals. 
 
 ![](images/season_total.jpeg)
@@ -132,7 +134,7 @@ Random Forests performed almost as well as the MLP model and have the bonus of m
 | Punt | 0.48 | 0.86 |
 | Other | 0.61 | 0.42 |
 
-The additional features resulted in a slight degradation of performance (down to 49.4%), but the new features were able to pop into the top 7. This didn't immediately make sense to me, and it's something I'd like to look into for future work. Further, I think understanding/creating partial dependence charts could help illuminate the interaction of the features and the outcomes.
+The additional features resulted in a slight degradation of performance (down to 49.4%), but the new features were able to pop into the top 7. This didn't immediately make sense to me, and it's something I'd like to look into for future work.
 
 ## People: Not as smart as trees.....(or computers)
 
