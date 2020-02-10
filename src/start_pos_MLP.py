@@ -58,6 +58,7 @@ if __name__ == '__main__':
     layer1_units = 200
     layer2_units = 100
     layer3_units = 50
+    dropout = 0.6
     n_classes = 4
     batch = 20
     ep = 10
@@ -84,7 +85,9 @@ if __name__ == '__main__':
                     activation = 'softmax')
       
     model.add(layer1)
+    model.add(Dropout(dropout))
     model.add(layer2)
+    model.add(Dropout(dropout))
     model.add(layer3)
     model.add(output_layer)
 
