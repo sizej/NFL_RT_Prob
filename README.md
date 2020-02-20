@@ -1,4 +1,4 @@
-# A Deeply Silly Idea: Predicting Possession Outcomes for NFL Games
+# Predicting Possession Outcomes for NFL Games
 
 ## Introduction
 
@@ -93,10 +93,6 @@ Possession outcomes are pretty random and don't necessarily lend themselves well
 | **TD** | **FG** | **Punt** | **Other** |
 | --- | --- | --- | --- | 
 | 19.5% | 13.9% | 40.8% | 25.8% |
-
-# OOPS, I DID IT AGAIN.....
-
-![](images/test.jpeg)
 
 ## The Models
 
