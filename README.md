@@ -80,11 +80,11 @@ Somewhat obviously, the further you start from the end zone, the more likely you
 
 ![](images/all_yards_scattter.jpeg)
 
-This is the same kind of plot, but this time including all plays (not just the start of possessions).
+Below is the same kind of plot, but this time including all plays (not just the start of possessions).
 
 ![](images/outcome_by_time.jpeg)
 
-Most of the noteworthy information here is in the last parts of each half. If a team takes possession very near the end of a half, the 'other' outcome becomes more likely than at other times.
+Most of the noteworthy information here is in the final minutes of each half. If a team takes possession very near the end of a half, the 'other' outcome becomes more likely than at other times.
 
 ## Predicting Outcomes
 
