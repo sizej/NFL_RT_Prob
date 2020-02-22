@@ -1,5 +1,6 @@
 import pandas as pd 
 import numpy as np 
+from obj import HistGames
 
 
 def home_yards(row):
@@ -55,12 +56,17 @@ def make_features(df):
 
 if __name__ == '__main__':
     plays = pd.read_csv('data/all_plays_S3.csv')
-    m0 = plays['down'].notna()
-    scrimmage = plays[m0].copy()
+    scrimmage = plays.copy()
+    scrimmage['game_date'] = pd.to_datetime(scrimmage['game_date'])
+    scrimmage['down'].fillna(0, inplace = True)
     scrimmage['home_yards_gained'] = scrimmage.apply(lambda row: home_yards(row), axis = 1)
     scrimmage['away_yards_gained'] = scrimmage.apply(lambda row: away_yards(row), axis = 1)
     scrimmage = make_features(scrimmage)
     scrimmage['pos_pp_cume_yds'] = scrimmage.apply(lambda row: pos_yards(row), axis = 1)
     scrimmage['pos_play_count'] = scrimmage.apply(lambda row: pos_plays(row), axis = 1)
     scrimmage['pos_yds_play'] = scrimmage.apply(lambda row: pos_yds_per_play(row), axis = 1)
-    scrimmage.to_csv('data/all_plays_enhanced.csv')
+    scrimmage = pd.concat([scrimmage, pd.get_dummies(scrimmage['down'], prefix = 'down_is')], axis = 1)
+    hist = HistGames()
+    scrimmage = pd.merge(left = scrimmage, right = hist.merge[['home_team', 'away_team', 'game_date', 'schedule_week']],
+                            how = 'left', on = ['game_date','home_team','away_team'])
+    scrimmage.to_csv('data/all_plays_enhanced2.csv')

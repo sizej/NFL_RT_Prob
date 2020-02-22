@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np 
 import datetime as dt 
 from random import sample 
+from team_dict import team_dict
 
 
 class PossessionStart(object):
@@ -77,4 +78,27 @@ class PossessionStart(object):
         self.train, self.test = self.tt_split()
         
 
+class HistGames(object):
+    '''
+    Cleaner class for the historical game data.
+    '''
+
+    def __init__(self, fname = 'data/Archive/spreadspoke_scores.csv'):
+        self.df = pd.read_csv(fname)
+        self.teams = team_dict
+        self.clean_up()
     
+    def clean_up(self):
+        self.df['schedule_date'] = pd.to_datetime(self.df['schedule_date'])
+        m0 = self.df['schedule_date'] > dt.datetime(2006,1,1)
+        self.df['team_home'] = self.df['team_home'].map(self.teams)
+        self.df['team_away'] = self.df['team_away'].map(self.teams)
+        self.df['spread'] = np.abs(self.df['spread_favorite'])
+        self.df.rename(columns = {'schedule_date': 'game_date',
+                            'team_home': 'home_team',
+                            'team_away': 'away_team',
+                            'team_favorite_id': 'favorite'}, inplace=True)
+        hist_cols = ['game_date', 'schedule_week', 'home_team', 'away_team', 'favorite', 'spread', 'over_under_line']
+        self.merge = self.df[hist_cols][m0].copy()
+        self.merge['total'] = pd.to_numeric(self.merge['over_under_line'])
+        self.merge.drop('over_under_line', axis = 1, inplace = True)
