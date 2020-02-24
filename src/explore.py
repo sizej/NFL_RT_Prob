@@ -214,4 +214,3 @@ if __name__ == '__main__':
     plot_fave_totals(games)
     plot_dawg_totals(games)
     plot_season_totals(games)
-

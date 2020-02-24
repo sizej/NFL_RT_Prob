@@ -1,6 +1,6 @@
 import pandas as pd 
 import numpy as np 
-from obj import HistGames
+from cleaner_class import HistGames
 
 
 def home_yards(row):
