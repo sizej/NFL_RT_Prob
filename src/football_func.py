@@ -139,6 +139,7 @@ def plot_feat_imp(idx, features, feat_importances,  n = 5, fname = 'images/test.
     plt.yticks(ticks = range(n), labels = labels)
     plt.tight_layout(pad = 1)
     plt.savefig(fname)
+    plt.close()
 
 def get_pos_starts(c = None):
     df = pd.read_csv('data/start_pos2_s3.csv', usecols = c)

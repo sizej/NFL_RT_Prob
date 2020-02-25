@@ -1,5 +1,6 @@
 game_id
 play_id
+play_type
 drive
 game_date
 game_seconds_remaining

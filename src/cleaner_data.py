@@ -4,7 +4,6 @@ import datetime as dt
 from random import sample 
 from team_dict import team_dict
 
-
 class PossessionStart(object):
 
     def __init__(self, fname):
@@ -116,19 +115,22 @@ class AllPlays(object):
         elif self.cols_file == 'RF':
             self.use_cols = self.get_cols_other()
         self.data = pd.read_csv(fname, usecols = self.use_cols)
-        self.remove_useless_na()
+        self.remove_useless_data()
         self.add_cols()
         self.make_splits()
         self.make_matrices()
 
     def make_matrices(self):
-        cols_to_exclude = ['game_id', 'play_id', 'drive', 'game_date', 'posteam', 'home_team', 
+        cols_to_exclude = ['game_id', 'play_id', 'drive', 'game_date', 'play_type', 'posteam', 'home_team', 
                             'away_team', 'target_num', 'target_cat', 'ends_TD', 'ends_FG', 'ends_punt', 'ends_other']
         self.features = [c for c in self.train.columns if c not in cols_to_exclude]
         self.y_train = self.train['target_num'].values
         self.y_test = self.test['target_num'].values
         self.X_train = self.train[self.features].values
         self.X_test = self.test[self.features].values
+        self.X_holdout = self.holdout[self.features].values
+        self.y_holdout = self.holdout['target_num'].values
+
     
     def get_LSTM_cols(self):
         fname = 'helpers/cols_all_plays_LSTM.txt'
@@ -175,18 +177,19 @@ class AllPlays(object):
         self.data['is_EOH'] = self.data.apply(lambda row: self.end_of_half_det(row), axis = 1)
         self.data['pos_home'] = (self.data['posteam'] == self.data['home_team']).astype(int)
 
-    def remove_useless_na(self):
+    def remove_useless_data(self):
         m0 = self.data['yardline_100'].notna()
         m1 = self.data['posteam'].notna()
         m2 = self.data['pos_pp_cume_yds'].notna()
         m3 = self.data['game_seconds_remaining'].notna()
+        m4 = self.data['play_type'].isin(['extra_point', 'kickoff'])
         self.data['posteam_score'].fillna(0, inplace = True)
         self.data['defteam_score'].fillna(0, inplace = True)
         self.data['pos_EP_pace'].fillna(0, inplace = True)
         self.data['def_EP_pace'].fillna(0, inplace = True)
         self.data['pos_pp_cume_yds'].fillna(0, inplace = True)
         self.data['pos_yds_play'].fillna(0, inplace = True)
-        self.data = self.data[m0 & m1 & m2 & m3].copy()
+        self.data = self.data[m0 & m1 & m2 & m3 & ~m4].copy()
 
     def make_target_cat(self, row):
         if row['ends_TD'] == 1:
@@ -207,3 +210,7 @@ class AllPlays(object):
             return 1
         else:
             return 0    
+
+
+if __name__ == '__main__':
+    pass
