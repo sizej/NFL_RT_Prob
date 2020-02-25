@@ -3,6 +3,7 @@ import numpy as np
 import datetime as dt 
 from random import sample 
 from team_dict import team_dict
+import matplotlib.pyplot as plt 
 
 class PossessionStart(object):
 
@@ -210,6 +211,110 @@ class AllPlays(object):
             return 1
         else:
             return 0    
+
+    def pred_game(self, model):
+        game = np.random.choice(self.holdout['game_id'].unique())
+        m0 = self.holdout['game_id'] == game
+        X_game = self.holdout[self.features][m0].values
+        y_game = self.holdout['target_num'][m0].values 
+        y_pred = model.predict(X_game)
+        y_probs = model.predict_proba(X_game)
+        self.game_score = model.score(X_game, y_game)
+        cols = ['prediction', 'prob0', 'prob1', 'prob2', 'prob3']
+        y_arr = np.concatenate((y_pred.reshape(-1, 1), y_probs), axis = 1)
+        pred_df = pd.DataFrame(y_arr, columns = cols)
+        temp_df = pd.concat((self.holdout[m0], pred_df), axis = 1)
+        return temp_df
+
+class Predictions(object):
+
+    def __init__(self, plays, model, all_fname = 'data/all_plays_enhanced2.csv', cols_fname = 'helpers/game_merge.txt'):
+        self.cols_fname = cols_fname
+        self.all_fname = all_fname
+        self.df = plays.holdout.reset_index()
+        self.X = plays.X_holdout
+        self.y = plays.y_holdout
+        self.model = model
+        self._make_df()
+        self._merge_desc()
+    
+    def _predict(self):
+        self.pred = self.model.predict(self.X)
+        self.probs = self.model.predict_proba(self.X)
+        self.model_score = self.model.score(self.X, self.y)
+    
+    def _make_df(self):
+        self._predict()
+        cols = ['prediction', 'prob0', 'prob1', 'prob2', 'prob3']
+        arr = np.concatenate((self.pred.reshape(-1,1), self.probs), axis = 1)
+        temp = pd.DataFrame(arr, columns = cols)
+        self.df = pd.concat([self.df, temp], axis = 1).copy()
+
+    def _merge_desc(self):
+        self._get_merge_cols()
+        temp = pd.read_csv(self.all_fname, usecols = self.merge_cols)
+        self.df = pd.merge(self.df, temp, how = 'left', on = ['game_id', 'play_id']).copy()
+
+    def _get_merge_cols(self):
+        cols = []
+        with open(self.cols_fname, 'r') as f:
+            for row in f:
+                idx = row.find('\n')
+                cols.append(row[:idx])
+        self.merge_cols = cols  
+    
+    def pick_random(self):
+        self.random_game = np.random.choice(self.df['game_id'].unique())
+        m0 = self.df['game_id'] == self.random_game
+        self.game = self.df[m0].copy()
+        self.play_num = 0
+        self.columns = list(self.df.columns)
+        self._set_display()
+    
+    def _set_display(self):
+        self.disp = ['home_team', 'away_team', 'posteam', 'posteam_score', 'defteam_score',
+                'spread', 'total', 'pos_fave', 'pos_EP_total', 'def_EP_total',
+                'game_seconds_remaining', 'down', 'ydstogo', 'yardline_100']
+        self.disp_idx = [self.columns.index(d) for d in self.disp]
+        prob = ['prob0', 'prob1', 'prob2', 'prob3']
+        self.p_idx = [self.columns.index(p) for p in prob]
+
+    def next_play(self):
+        plt.close()
+        if self.play_num == 0:
+            desc = 'Opening Kickoff'
+        else:
+            desc = self.game.iloc[self.play_num - 1, 45]
+        print(self.game.iloc[self.play_num, self.disp_idx], desc)
+        if self.play_num != 0:
+            probs = self.game.iloc[self.play_num, self.p_idx].values
+            colors = ['r' if x == max(probs) else 'b' for x in probs]
+            fig, ax = plt.subplots()
+            ax.barh(np.arange(4), probs, color = colors, alpha = 0.8)
+            ax.set_yticks(np.arange(4))
+            ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'])
+            ax.set_xticks([])
+            ax.set_title('Real-Time Outcome Probability')
+            for i, p in probs:
+                ax.annotate(f'{p*100:0.1f}%', (i, p + 0.05))
+            plt.tight_layout(pad = 1)
+            plt.show()
+        self.play_num += 1
+
+
+class GameViz(object):
+
+    def __init__(self, game, all_fname = 'data/all_plays_enhanced2.csv', cols_fname = 'helpers/game_merge.txt'):
+        self.game_df = game
+        self.cols_file = cols_fname
+        cols = self.get_merge_cols()
+        self.all_plays = pd.read_csv(fname, usecols = cols)
+        self.i = 0
+
+    def merge(self):
+        self.df = pd.merge(self.game_df, self.all_plays, how = 'left', on = ['game_id', 'play_id'])
+         
+
 
 
 if __name__ == '__main__':
