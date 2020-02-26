@@ -4,7 +4,8 @@ import datetime as dt
 from random import sample 
 from team_dict import team_dict
 import matplotlib.pyplot as plt 
-import time 
+import time
+import os
 
 class PossessionStart(object):
 
@@ -315,16 +316,10 @@ class Predictions(object):
             self.next_play()
 
     def export_game(self):
-        drive_nums = self.game['drive'].values
-        ends = []
-        for i, d in enumerate(drive_nums[:-1]):
-            if d == drive_nums[i+1]:
-                ends.append(0)
-            else:
-                ends.append(1)
-        ends.append(0)
-        self.game['end_of_poss'] = ends
-        self.game.to_csv('data/modeled_games/' + f'{self.random_game}' + '_plays.csv')
+        diff = list(self.game['drive'].diff()[1:])
+        diff.append(0)
+        self.game['end_of_poss'] = diff
+        self.game.to_csv('data/' + f'{self.random_game}' + '_plays.csv')
 
 class Game(object):
 
@@ -341,23 +336,25 @@ class Game(object):
         self.play_num += 1
     
     def _set_table_cols(self):
-        self.game_cols = ['home_team', 'away_team', 'posteam', 'pos_fave', 'spread', 'total', 'posteam_score', 'defteam_score']
+        self.game_cols = ['home_team', 'away_team', 'posteam','pos_fave', 'spread', 'total', 'posteam_score', 'defteam_score']
         self.sitch_cols = ['down', 'ydstogo', 'yardline_100', 'goal_to_go', 'game_seconds_remaining', 'posteam_timeouts_remaining', 'defteam_timeouts_remaining']
         self.play_cols = ['play_type', 'ydsnet', 'desc']
-        self.poss_cols = ['prediction', 'end_of_poss']
+        self.poss_cols = ['prediction', 'end_of_poss', 'target_cat']
         self.prob_cols = ['prob0', 'prob1', 'prob2', 'prob3']
 
     def _create_tables(self):
         self.game_deets = self.plays.loc[self.play_num, self.game_cols].to_dict()
         self.sitch_deets = self.plays.loc[self.play_num, self.sitch_cols].to_dict()
-        self.play_deets = self.plays.loc[self.play_num, self.sitch_cols].to_dict()
+        self.play_deets = self.plays.loc[self.play_num, self.play_cols].to_dict()
         self.poss_deets = self.plays.loc[self.play_num, self.poss_cols].to_dict()
         return
     
     def _create_prob_plot(self):
+        if self.play_num > 0:
+            os.remove(f'web_app/{self.fname}')
         probs = self.plays.loc[self.play_num, self.prob_cols]
-        # fname = f'web_app/static/{self.game}/play_{self.play_num}.jpeg'
-        fname = f'images/{self.game}/play_{self.play_num}.jpeg'
+        self.fname = f'static/{self.game}/play_{self.play_num}.jpeg'
+        # self.fname = f'images/{self.game}/play_{self.play_num}.jpeg'
         fig, ax = plt.subplots()
         colors = ['r' if x == max(probs) else 'b' for x in probs]
         ax.barh(range(4), probs, color = colors, alpha = 0.8)
@@ -369,7 +366,7 @@ class Game(object):
         for i, p in enumerate(probs):
             ax.annotate(f'{p*100:0.1f}%', (p + 0.02, i))
         plt.tight_layout(pad = 2)
-        plt.savefig(fname)
+        plt.savefig(f'web_app/{self.fname}')
         plt.close()
 
 
