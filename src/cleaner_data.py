@@ -285,7 +285,9 @@ class Predictions(object):
             desc = 'Opening Kickoff'
         else:
             desc = self.game.iloc[self.play_num - 1, 45]
-        print(self.game.iloc[self.play_num, self.disp_idx], f'Previous play: {desc}')
+        self.last_play_deets = self.game.iloc[self.play_num, self.disp_idx].to_dict()
+        self.last_play_deets['Previous_Play'] = desc
+        # str([self.game.iloc[self.play_num, self.disp_idx], f'Previous play: {desc}'])
         if self.play_num != 0:
             probs = self.game.iloc[self.play_num, self.p_idx].values
             colors = ['r' if x == max(probs) else 'b' for x in probs]
@@ -299,11 +301,14 @@ class Predictions(object):
             for i, p in enumerate(probs):
                 ax.annotate(f'{p*100:0.1f}%', (p + 0.02, i))
             plt.tight_layout(pad = 2)
-            plt.show(block = False)
-            plt.pause(5)
-            # time.sleep(5)
+            plt.savefig('images/last_play.jpeg')
+            # plt.show(block = False)
+            # plt.pause(5)
             plt.close()
         self.play_num += 1
+        self.last_play_deets = {k: str(v) for k, v in self.last_play_deets.items()}
+        return self.last_play_deets
+    
 
     def whole_game(self):
         for i in range(self.game.shape[0]):
