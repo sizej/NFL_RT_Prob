@@ -10,9 +10,10 @@ import pickle
 
 plt.style.use('fivethirtyeight')
 
+
 if __name__ == '__main__':
     with open('data/predictions.pkl', 'rb') as f:
         pred = pickle.load(f)
-    for i in range(10):
-        pred.pick_random()
-        pred.export_game()
+    # for i in range(10):
+    #     pred.pick_random()
+    #     pred.export_game()

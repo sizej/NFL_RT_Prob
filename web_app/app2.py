@@ -6,7 +6,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-g = 2018101405
+g = 2018121600
 game = Game(g)
 if not str(g) in os.listdir('web_app/static'):
     os.mkdir(f'web_app/static/{g}')
@@ -41,6 +41,7 @@ pred_dict = {0: 'TD', 1: 'FG', 2: 'Punt', 3: 'Other'}
 
 @app.route('/')
 def home_page():
+    game.play_num = 0
     return '''
     <form action="/next_play" method='POST' >
         <input type="submit" />
@@ -72,6 +73,14 @@ def get_random():
         actual_outcome = pos_deet['target_cat']
     else:
         actual_outcome = "?"
+    
+    if s_deet['yardline_100'] >= 50:
+        yardline = g_deet['posteam'] + ' ' + str(100 - s_deet['yardline_100'])
+    else:
+        if g_deet['posteam'] == g_deet['home_team']:
+            yardline = g_deet['away_team'] + ' ' + str(s_deet['yardline_100'])
+        else:
+            yardline = g_deet['home_team'] + ' ' + str(s_deet['yardline_100'])
     html = f''' <body>
                 <h2> Game: </h2>
                 <table style="width:60%">
@@ -108,9 +117,9 @@ def get_random():
                         <th>Def TO Rem.<th>
                     </tr>
                     <tr>
-                        <th>{s_deet['down']}<th>
+                        <th>{int(s_deet['down'])}<th>
                         <th>{s_deet['ydstogo']}<th>
-                        <th>{s_deet['yardline_100']}<th>
+                        <th>{yardline}<th>
                         <th>{s_deet['goal_to_go']}<th>
                         <th>{game_clock}<th>
                         <th>{int(s_deet['posteam_timeouts_remaining'])}<th>

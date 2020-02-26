@@ -355,17 +355,17 @@ class Game(object):
         probs = self.plays.loc[self.play_num, self.prob_cols]
         self.fname = f'static/{self.game}/play_{self.play_num}.jpeg'
         # self.fname = f'images/{self.game}/play_{self.play_num}.jpeg'
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(frameon = False, figsize = (10,5))
         colors = ['r' if x == max(probs) else 'b' for x in probs]
         ax.barh(range(4), probs, color = colors, alpha = 0.8)
         ax.set_yticks(np.arange(4))
         ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'])
         ax.set_xticks([])
-        ax.set_xlim(0, max(probs) + .05)
+        ax.set_xlim(0, max(probs) + .15)
         ax.set_title('Real-Time Outcome Probability')
         for i, p in enumerate(probs):
-            ax.annotate(f'{p*100:0.1f}%', (p + 0.02, i))
-        plt.tight_layout(pad = 2)
+            ax.annotate(f'{p*100:0.1f}%', (p + 0.005, i))
+        plt.tight_layout(pad = 3)
         plt.savefig(f'web_app/{self.fname}')
         plt.close()
 
