@@ -2,8 +2,12 @@ from flask import Flask, request
 from cleaner_data import Predictions
 import pickle
 import matplotlib.pyplot as plt 
+from flask_caching import Cache  
 
+config = {"CACHE_TYPE": "null"}
 app = Flask(__name__)
+app.config.from_mapping(config)
+cache = Cache(app)
 
 with open('data/predictions.pkl', 'rb') as f:
     pred = pickle.load(f)
@@ -30,16 +34,18 @@ def get_random():
 @app.route('/next_play', methods = ['POST'])
 def predict():
     x = pred.next_play()
-    text = ''' <body>
-            <img src="~/DSI/repos/NFL_RT_Data/images/last_play.jpeg">
+    fname = pred.fname
+    text = f''' <body>
+            <img src="{fname}">
             </body>
             <form action="/next_play" method='POST' >
             <input type="submit" />
             </form>
             '''
-    show = str(x) + text
+    show = str(x) + str(fname) + text
     return show
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
+    

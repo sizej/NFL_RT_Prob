@@ -5,6 +5,9 @@ from random import sample
 from team_dict import team_dict
 import matplotlib.pyplot as plt 
 import time 
+import os
+
+plt.style.use('fivethirtyeight')
 
 class PossessionStart(object):
 
@@ -299,9 +302,12 @@ class Predictions(object):
             ax.set_xlim(0, max(probs) + .05)
             ax.set_title('Real-Time Outcome Probability')
             for i, p in enumerate(probs):
-                ax.annotate(f'{p*100:0.1f}%', (p + 0.02, i))
+                ax.annotate(f'{p*100:0.1f}%', (p + 0.005, i))
             plt.tight_layout(pad = 2)
-            plt.savefig('web_app/static/last_play.jpeg')
+            self.fname = f'static/_{self.play_num}.jpeg'
+            plt.savefig(f'web_app/{self.fname}')
+            if self.play_num >= 2:
+                os.remove('web_app/static/_' + f'{self.play_num - 1}.jpeg')
             # plt.show(block = False)
             # plt.pause(5)
             plt.close()
@@ -314,57 +320,6 @@ class Predictions(object):
         for i in range(self.game.shape[0]):
             self.next_play()
 
-    def export_game(self):
-        diff = list(self.game['drive'].diff()[1:])
-        diff.append(0)
-        self.game['end_of_poss'] = diff
-        self.game.to_csv('data/' + f'{self.random_game}' + '_plays.csv')
-
-class Game(object):
-
-    def __init__(self, game_id):
-        self.game = game_id
-        fname = 'data/modeled_games/' + f'{self.game}_plays.csv'
-        self.plays = pd.read_csv(fname)
-        self._set_table_cols()
-        self.play_num = 0
-
-    def get_next_play(self):
-        self._create_tables()
-        self._create_prob_plot()
-        self.play_num += 1
-    
-    def _set_table_cols(self):
-        self.game_cols = ['home_team', 'away_team', 'posteam', 'pos_fave', 'spread', 'total', 'posteam_score', 'defteam_score']
-        self.sitch_cols = ['down', 'ydstogo', 'yardline_100', 'goal_to_go', 'game_seconds_remaining', 'posteam_timeouts_remaining', 'defteam_timeouts_remaining']
-        self.play_cols = ['play_type', 'ydsnet', 'desc']
-        self.poss_cols = ['prediction', 'end_of_poss']
-        self.prob_cols = ['prob0', 'prob1', 'prob2', 'prob3']
-
-    def _create_tables(self):
-        self.game_deets = self.plays.loc[self.play_num, self.game_cols].to_dict()
-        self.sitch_deets = self.plays.loc[self.play_num, self.sitch_cols].to_dict()
-        self.play_deets = self.plays.loc[self.play_num, self.sitch_cols].to_dict()
-        self.poss_deets = self.plays.loc[self.play_num, self.poss_cols].to_dict()
-        return
-    
-    def _create_prob_plot(self):
-        probs = self.plays.loc[self.play_num, self.prob_cols]
-        # fname = f'web_app/static/{self.game}/play_{self.play_num}.jpeg'
-        fname = f'images/{self.game}/play_{self.play_num}.jpeg'
-        fig, ax = plt.subplots()
-        colors = ['r' if x == max(probs) else 'b' for x in probs]
-        ax.barh(range(4), probs, color = colors, alpha = 0.8)
-        ax.set_yticks(np.arange(4))
-        ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'])
-        ax.set_xticks([])
-        ax.set_xlim(0, max(probs) + .05)
-        ax.set_title('Real-Time Outcome Probability')
-        for i, p in enumerate(probs):
-            ax.annotate(f'{p*100:0.1f}%', (p + 0.02, i))
-        plt.tight_layout(pad = 2)
-        plt.savefig(fname)
-        plt.close()
 
 
 

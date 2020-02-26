@@ -2,4 +2,3 @@ game_id
 play_id
 desc
 down
-ydsnet
