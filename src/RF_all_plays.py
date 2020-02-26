@@ -13,9 +13,12 @@ plt.style.use('fivethirtyeight')
 if __name__ == '__main__':
     with open('data/all_pickle.pkl', 'rb') as f:
         plays = pickle.load(f)
-    with open('helpers/rf_model.pkl', 'rb') as f:
+    with open('data/rf_model.pkl', 'rb') as f:
         rf = pickle.load(f)
 
+    pred = Predictions(plays, rf)
+    pred.pick_random()
+    pred.whole_game()
     # plays = AllPlays(cols_file = 'RF')
     # rf = RFC(n_estimators = 250, min_samples_leaf = 2, bootstrap = False, n_jobs = -1)
     # rf.fit(plays.X_train, plays.y_train)
@@ -39,9 +42,8 @@ if __name__ == '__main__':
     #     fname = 'helpers/rf_model.pkl'
     #     pickle.dump(rf, open(fname, 'wb'))
 
-    pred = Predictions(plays, rf)
-    pred.pick_random()
-    pred.next_play()
+
+    # pred.whole_possession()
     # # Get a trial game for step-through analysis
     # game = np.random.choice(plays.holdout['game_id'])
     # m0 = plays.holdout['game_id'] == game

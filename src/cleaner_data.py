@@ -4,6 +4,7 @@ import datetime as dt
 from random import sample 
 from team_dict import team_dict
 import matplotlib.pyplot as plt 
+import time 
 
 class PossessionStart(object):
 
@@ -280,12 +281,11 @@ class Predictions(object):
         self.p_idx = [self.columns.index(p) for p in prob]
 
     def next_play(self):
-        plt.close()
         if self.play_num == 0:
             desc = 'Opening Kickoff'
         else:
             desc = self.game.iloc[self.play_num - 1, 45]
-        print(self.game.iloc[self.play_num, self.disp_idx], desc)
+        print(self.game.iloc[self.play_num, self.disp_idx], f'Previous play: {desc}')
         if self.play_num != 0:
             probs = self.game.iloc[self.play_num, self.p_idx].values
             colors = ['r' if x == max(probs) else 'b' for x in probs]
@@ -294,26 +294,20 @@ class Predictions(object):
             ax.set_yticks(np.arange(4))
             ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'])
             ax.set_xticks([])
+            ax.set_xlim(0, max(probs) + .05)
             ax.set_title('Real-Time Outcome Probability')
-            for i, p in probs:
-                ax.annotate(f'{p*100:0.1f}%', (i, p + 0.05))
-            plt.tight_layout(pad = 1)
-            plt.show()
+            for i, p in enumerate(probs):
+                ax.annotate(f'{p*100:0.1f}%', (p + 0.02, i))
+            plt.tight_layout(pad = 2)
+            plt.show(block = False)
+            plt.pause(5)
+            # time.sleep(5)
+            plt.close()
         self.play_num += 1
 
-
-class GameViz(object):
-
-    def __init__(self, game, all_fname = 'data/all_plays_enhanced2.csv', cols_fname = 'helpers/game_merge.txt'):
-        self.game_df = game
-        self.cols_file = cols_fname
-        cols = self.get_merge_cols()
-        self.all_plays = pd.read_csv(fname, usecols = cols)
-        self.i = 0
-
-    def merge(self):
-        self.df = pd.merge(self.game_df, self.all_plays, how = 'left', on = ['game_id', 'play_id'])
-         
+    def whole_game(self):
+        for i in range(self.game.shape[0]):
+            self.next_play()
 
 
 
