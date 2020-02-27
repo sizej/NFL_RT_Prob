@@ -3,6 +3,8 @@ from cleaner_data2 import Game
 import matplotlib.pyplot as plt 
 import os
 import numpy as np 
+from app_func import *
+from app_func import pred_dict
 
 app = Flask(__name__)
 
@@ -11,40 +13,17 @@ game = Game(g)
 if not str(g) in os.listdir('web_app/static'):
     os.mkdir(f'web_app/static/{g}')
 
-def time_remaining(gsr):
-    if gsr > 2700:
-        mnt = int((gsr - 2700)//60)
-        sec = int((gsr - 2700) - (mnt * 60))
-        if sec < 10:
-            sec = f'0{sec}'
-        return f'Q1 - {mnt}:{sec}'
-    elif gsr > 1800:
-        mnt = int((gsr - 1800)//60)
-        sec = int((gsr - 1800) - (mnt * 60))
-        if sec < 10:
-            sec = f'0{sec}'
-        return f'Q2 - {mnt}:{sec}'
-    elif gsr > 900:
-        mnt = int((gsr - 900)//60)
-        sec = int((gsr - 900) - (mnt * 60))
-        if sec < 10:
-            sec = f'0{sec}'
-        return f'Q3 - {mnt}:{sec}'
-    else:
-        mnt = int((gsr - 0)//60)
-        sec = int(gsr - (mnt * 60))
-        if sec < 10:
-            sec = f'0{sec}'
-        return f'Q4 - {mnt}:{sec}'
-
-pred_dict = {0: 'TD', 1: 'FG', 2: 'punt', 3: 'other'}
-
-@app.route('/')
+@app.route('/', methods = ['POST'])
 def home_page():
     game.play_num = 0
     return '''
+    <body>
+    <h1> THE ELIMINATOR!!! </h1>
+    <img src="https://img1.looper.com/img/gallery/these-things-happen-in-every-single-terminator-movie/intro-1564072959.jpg" >
+    <p> Arnold does NOT ENDORSE the Eliminator! You should play anyway. </p>
+    </body>
     <form action="/next_play" method='POST' >
-        <input type="submit" />
+        <input type="submit" value="Let's Play!" style="height:200px;width:200px"/>
     </form>
     '''
 
@@ -57,31 +36,16 @@ def get_random():
     pos_deet = game.poss_deets
     fname = game.fname
     game_clock = time_remaining(s_deet['game_seconds_remaining'])
-    if g_deet['posteam'] == g_deet['away_team']:
-        home_score = int(g_deet['posteam_score'])
-        away_score = int(g_deet['defteam_score'])
-    else:
-        home_score = int(g_deet['defteam_score'])
-        away_score = int(g_deet['posteam_score'])
-    if g_deet['pos_fave'] == 1:
-        favorite = g_deet['posteam']
-    elif g_deet['posteam'] == g_deet['away_team']:
-        favorite = g_deet['home_team']
-    else:
-        favorite = g_deet['away_team']
-    if pos_deet['end_of_poss'] == 1:
-        actual_outcome = pos_deet['target_cat']
-    else:
-        actual_outcome = "?"
-    
-    if s_deet['yardline_100'] >= 50:
-        yardline = g_deet['posteam'] + ' ' + str(100 - s_deet['yardline_100'])
-    else:
-        if g_deet['posteam'] == g_deet['home_team']:
-            yardline = g_deet['away_team'] + ' ' + str(s_deet['yardline_100'])
-        else:
-            yardline = g_deet['home_team'] + ' ' + str(s_deet['yardline_100'])
-    html = f''' <body>
+    actual_outcome = outcome_det(pos_deet)
+    favorite = fave_det(g_deet)
+    home_score, away_score = score_det(g_deet)
+    yardline = yard_det(g_deet, s_deet)
+
+    html = f''' 
+                <form action="/next_play" method='POST' >
+                    <input type="submit" value="Next Play", style="height:200px;width:200px"/>
+                </form>
+                <body>
                 <h2> Game: </h2>
                 <table style="width:60%">
                     <tr>
@@ -148,8 +112,8 @@ def get_random():
                     </tr>
                 </table>
                 </body>
-                <form action="/next_play" method='POST' >
-                    <input type="submit" />
+                <form action="/" method='POST' >
+                    <input type="submit" value="Start Over"/>
                 </form>
                 '''
     return html
