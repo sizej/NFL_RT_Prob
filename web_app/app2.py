@@ -120,7 +120,7 @@ def get_random():
                         <th>{int(s_deet['down'])}<th>
                         <th>{s_deet['ydstogo']}<th>
                         <th>{yardline}<th>
-                        <th>{s_deet['goal_to_go']}<th>
+                        <th>{int(s_deet['goal_to_go'])}<th>
                         <th>{game_clock}<th>
                         <th>{int(s_deet['posteam_timeouts_remaining'])}<th>
                         <th>{int(s_deet['defteam_timeouts_remaining'])}<th>
@@ -138,14 +138,12 @@ def get_random():
                         <th>{actual_outcome}<th>
                     </tr>
                 </table>
-                <h2> Play Details: </h2>
+                <h2> Previous Play: </h2>
                 <table style="width:50%">
                     <tr>
-                        <th>Play Type<th>
-                        <th>Desc.<th>
+                        <th>Desc<th>
                     </tr>
                     <tr>
-                        <th>{pl_deet['play_type']}<th>
                         <th>{pl_deet['desc']}<th>
                     </tr>
                 </table>

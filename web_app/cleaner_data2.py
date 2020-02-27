@@ -338,15 +338,18 @@ class Game(object):
     def _set_table_cols(self):
         self.game_cols = ['home_team', 'away_team', 'posteam','pos_fave', 'spread', 'total', 'posteam_score', 'defteam_score']
         self.sitch_cols = ['down', 'ydstogo', 'yardline_100', 'goal_to_go', 'game_seconds_remaining', 'posteam_timeouts_remaining', 'defteam_timeouts_remaining']
-        self.play_cols = ['play_type', 'ydsnet', 'desc']
+        self.play_cols = ['desc']
         self.poss_cols = ['prediction', 'end_of_poss', 'target_cat']
         self.prob_cols = ['prob0', 'prob1', 'prob2', 'prob3']
 
     def _create_tables(self):
         self.game_deets = self.plays.loc[self.play_num, self.game_cols].to_dict()
         self.sitch_deets = self.plays.loc[self.play_num, self.sitch_cols].to_dict()
-        self.play_deets = self.plays.loc[self.play_num, self.play_cols].to_dict()
         self.poss_deets = self.plays.loc[self.play_num, self.poss_cols].to_dict()
+        if self.play_num >0:
+            self.play_deets = self.plays.loc[self.play_num-1, self.play_cols].to_dict()
+        else:
+            self.play_deets = {'desc': 'Opening Kick-off'}
         return
     
     def _create_prob_plot(self):
@@ -355,7 +358,7 @@ class Game(object):
         probs = self.plays.loc[self.play_num, self.prob_cols]
         self.fname = f'static/{self.game}/play_{self.play_num}.jpeg'
         # self.fname = f'images/{self.game}/play_{self.play_num}.jpeg'
-        fig, ax = plt.subplots(frameon = False, figsize = (10,5))
+        fig, ax = plt.subplots(figsize = (10,5))
         colors = ['r' if x == max(probs) else 'b' for x in probs]
         ax.barh(range(4), probs, color = colors, alpha = 0.8)
         ax.set_yticks(np.arange(4))
