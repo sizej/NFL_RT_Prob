@@ -37,7 +37,7 @@ def time_remaining(gsr):
             sec = f'0{sec}'
         return f'Q4 - {mnt}:{sec}'
 
-pred_dict = {0: 'TD', 1: 'FG', 2: 'Punt', 3: 'Other'}
+pred_dict = {0: 'TD', 1: 'FG', 2: 'punt', 3: 'other'}
 
 @app.route('/')
 def home_page():

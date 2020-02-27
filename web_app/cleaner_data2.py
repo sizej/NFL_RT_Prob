@@ -325,7 +325,7 @@ class Game(object):
 
     def __init__(self, game_id):
         self.game = game_id
-        fname = 'data/modeled_games/' + f'{self.game}_plays.csv'
+        fname = 'web_app/modeled_games/' + f'{self.game}_plays.csv'
         self.plays = pd.read_csv(fname)
         self._set_table_cols()
         self.play_num = 0
@@ -359,7 +359,11 @@ class Game(object):
         self.fname = f'static/{self.game}/play_{self.play_num}.jpeg'
         # self.fname = f'images/{self.game}/play_{self.play_num}.jpeg'
         fig, ax = plt.subplots(figsize = (10,5))
-        colors = ['r' if x == max(probs) else 'b' for x in probs]
+        if self.poss_deets['end_of_poss'] == 1:
+            c_dict = {'TD': 0, 'FG': 1, 'punt': 2, 'other': 3}
+            colors = ['g' if x == c_dict[self.poss_deets['target_cat']] else 'b' for x in range(4)]
+        else:
+            colors = ['r' if x == max(probs) else 'b' for x in probs]
         ax.barh(range(4), probs, color = colors, alpha = 0.8)
         ax.set_yticks(np.arange(4))
         ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'])
