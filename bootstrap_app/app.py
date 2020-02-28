@@ -22,7 +22,7 @@ def home_page():
     <center>
     <h1> THE ELIMINATOR!!! </h1>
     <img src="https://img1.looper.com/img/gallery/these-things-happen-in-every-single-terminator-movie/intro-1564072959.jpg" >
-    <p> Arnold does NOT ENDORSE the Eliminator! You should play anyway. </p>
+    <p> <i>***Arnold does NOT ENDORSE the Eliminator! You should play anyway. </i></p>
     </body>
     <form action="/next_play" method='POST' >
         <input type="submit" value="Let's Play!" style="height:50px;width:200px"/>
@@ -50,72 +50,79 @@ def get_random():
                 <form action="/next_play" method='POST' >
                     <input type="submit" value="Next Play", style="height:50px;width:200px"/>
                 </form>
+                 <head>
                 <body>
-                <h2> Game: </h2>
-                <table style="width:60%">
-                    <tr>
-                        <th>Away Team<th>
-                        <th>Home Team<th>
-                        <th>Possession<th>
-                        <th>Favorite<th>
-                        <th>Spread<th>
-                        <th>Total<th>
-                        <th>Away Score<th>
-                        <th>Home Score<th>
-                    </tr>
-                    <tr>
-                        <th>{g_deet['away_team']}<th>
-                        <th>{g_deet['home_team']}<th>
-                        <th>{g_deet['posteam']}<th>
-                        <th>{favorite}<th>
-                        <th>{g_deet['spread']}<th>
-                        <th>{g_deet['total']}<th>
-                        <th>{home_score}<th>
-                        <th>{away_score}<th>
-                    </tr>
-                </table>
-                <h2> Possession: </h2>
-                <table style="width:60%">
-                    <tr>
-                        <th>Down<th>
-                        <th>Distance<th>
-                        <th>Yardline<th>
-                        <th>Goal to Go<th>
-                        <th>Game Clock<th>
-                        <th>Pos TO Rem.<th>
-                        <th>Def TO Rem.<th>
-                    </tr>
-                    <tr>
-                        <th>{int(s_deet['down'])}<th>
-                        <th>{s_deet['ydstogo']}<th>
-                        <th>{yardline}<th>
-                        <th>{int(s_deet['goal_to_go'])}<th>
-                        <th>{game_clock}<th>
-                        <th>{int(s_deet['posteam_timeouts_remaining'])}<th>
-                        <th>{int(s_deet['defteam_timeouts_remaining'])}<th>
-                    </tr>
-                </table>
-                <img src="{fname}">
-                <h2> Prediction: </h2>
-                <table style="width:30%">
-                    <tr>
-                        <th>Model Prediction<th>
-                        <th>Actual Outcome<th>
-                    </tr>
-                    <tr>
-                        <th>{pred_dict[pos_deet['prediction']]}<th>
-                        <th>{actual_outcome}<th>
-                    </tr>
-                </table>
-                <h2> Previous Play: </h2>
-                <table style="width:50%">
-                    <tr>
-                        <th>Desc<th>
-                    </tr>
-                    <tr>
-                        <th>{pl_deet['desc']}<th>
-                    </tr>
-                </table>
+                <div class="row">
+                    <div class="column">
+                    <h2> Game: </h2>
+                        <table style="width:60%">
+                            <tr>
+                                <th>Away Team<th>
+                                <th>Home Team<th>
+                                <th>Possession<th>
+                                <th>Favorite<th>
+                                <th>Spread<th>
+                                <th>Total<th>
+                                <th>Away Score<th>
+                                <th>Home Score<th>
+                            </tr>
+                            <tr>
+                                <th>{g_deet['away_team']}<th>
+                                <th>{g_deet['home_team']}<th>
+                                <th>{g_deet['posteam']}<th>
+                                <th>{favorite}<th>
+                                <th>{g_deet['spread']}<th>
+                                <th>{g_deet['total']}<th>
+                                <th>{home_score}<th>
+                                <th>{away_score}<th>
+                            </tr>
+                        </table>
+                    <h2> Possession: </h2>
+                        <table style="width:60%">
+                            <tr>
+                                <th>Down<th>
+                                <th>Distance<th>
+                                <th>Yardline<th>
+                                <th>Goal to Go<th>
+                                <th>Game Clock<th>
+                                <th>Pos TO Rem.<th>
+                                <th>Def TO Rem.<th>
+                            </tr>
+                            <tr>
+                                <th>{int(s_deet['down'])}<th>
+                                <th>{s_deet['ydstogo']}<th>
+                                <th>{yardline}<th>
+                                <th>{int(s_deet['goal_to_go'])}<th>
+                                <th>{game_clock}<th>
+                                <th>{int(s_deet['posteam_timeouts_remaining'])}<th>
+                                <th>{int(s_deet['defteam_timeouts_remaining'])}<th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="column">
+                        <img src="{fname}">
+                        <h2> Prediction: </h2>
+                        <table style="width:30%">
+                            <tr>
+                                <th>Model Prediction<th>
+                                <th>Actual Outcome<th>
+                            </tr>
+                            <tr>
+                                <th>{pred_dict[pos_deet['prediction']]}<th>
+                                <th>{actual_outcome}<th>
+                            </tr>
+                        </table>
+                        <h2> Previous Play: </h2>
+                        <table style="width:50%">
+                            <tr>
+                                <th>Desc<th>
+                            </tr>
+                            <tr>
+                                <th>{pl_deet['desc']}<th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 </body>
                 <form action="/" method='POST' >
                     <input type="submit" value="Start Over" style="height:50px;width:200px"/>
