@@ -14,6 +14,7 @@ game = Game(g)
 if not str(g) in os.listdir('bootstrap_app/static'):
     os.mkdir(f'bootstrap_app/static/{g}')
 
+
 @app.route('/', methods = ['GET','POST'])
 def home_page():
     game.play_num = 0

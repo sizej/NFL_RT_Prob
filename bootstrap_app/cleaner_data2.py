@@ -325,7 +325,7 @@ class Game(object):
 
     def __init__(self, game_id):
         self.game = game_id
-        fname = 'data/modeled_games/' + f'{self.game}_plays.csv'
+        fname = 'bootstrap_app/modeled_games/' + f'{self.game}_plays.csv'
         self.plays = pd.read_csv(fname)
         self._set_table_cols()
         self.play_num = 0
