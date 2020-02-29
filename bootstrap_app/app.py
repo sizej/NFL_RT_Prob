@@ -9,7 +9,7 @@ from app_func import pred_dict
 
 app = Flask(__name__)
 
-g = 2018120913
+g = 2018101405
 game = Game(g)
 if not str(g) in os.listdir('bootstrap_app/static'):
     os.mkdir(f'bootstrap_app/static/{g}')
