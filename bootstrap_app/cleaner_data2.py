@@ -228,6 +228,7 @@ class AllPlays(object):
         temp_df = pd.concat((self.holdout[m0], pred_df), axis = 1)
         return temp_df
 
+
 class Predictions(object):
 
     def __init__(self, plays, model, all_fname = 'data/all_plays_enhanced2.csv', cols_fname = 'helpers/game_merge.txt'):
@@ -320,6 +321,7 @@ class Predictions(object):
         diff.append(0)
         self.game['end_of_poss'] = diff
         self.game.to_csv('data/' + f'{self.random_game}' + '_plays.csv')
+
 
 class Game(object):
 

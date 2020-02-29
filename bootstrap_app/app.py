@@ -9,7 +9,7 @@ from app_func import pred_dict
 
 app = Flask(__name__)
 
-g = 2018121600
+g = 2018120913
 game = Game(g)
 if not str(g) in os.listdir('bootstrap_app/static'):
     os.mkdir(f'bootstrap_app/static/{g}')
@@ -47,10 +47,14 @@ def get_random():
 
     html = f''' 
                 {render_template('index.html')}
+                <body>
+                <p> </p>
+                <p> </p>
                 <center>
                 <form action="/next_play" method='POST' >
                     <input type="submit" value="Next Play", style="height:50px;width:200px"/>
                 </form>
+                </body>
                  <head>
                 <body>
                 <div class="row">
@@ -58,45 +62,45 @@ def get_random():
                     <h2> Game: </h2>
                         <table style="width:60%">
                             <tr>
-                                <th>Away Team<th>
-                                <th>Home Team<th>
-                                <th>Possession<th>
-                                <th>Favorite<th>
-                                <th>Spread<th>
-                                <th>Total<th>
-                                <th>Away Score<th>
-                                <th>Home Score<th>
+                                <th>Away Team</th>
+                                <th>Home Team</th>
+                                <th>Possession</th>
+                                <th>Favorite</th>
+                                <th>Spread</th>
+                                <th>Total</th>
+                                <th>Away Score</th>
+                                <th>Home Score</th>
                             </tr>
                             <tr>
-                                <th>{g_deet['away_team']}<th>
-                                <th>{g_deet['home_team']}<th>
-                                <th>{g_deet['posteam']}<th>
-                                <th>{favorite}<th>
-                                <th>{g_deet['spread']}<th>
-                                <th>{g_deet['total']}<th>
-                                <th>{home_score}<th>
-                                <th>{away_score}<th>
+                                <th>{g_deet['away_team']}</th>
+                                <th>{g_deet['home_team']}</th>
+                                <th>{g_deet['posteam']}</th>
+                                <th>{favorite}</th>
+                                <th>{g_deet['spread']}</th>
+                                <th>{g_deet['total']}</th>
+                                <th>{home_score}</th>
+                                <th>{away_score}</th>
                             </tr>
                         </table>
                     <h2> Possession: </h2>
                         <table style="width:60%">
                             <tr>
-                                <th>Down<th>
-                                <th>Distance<th>
-                                <th>Yardline<th>
-                                <th>Goal to Go<th>
-                                <th>Game Clock<th>
-                                <th>Pos TO Rem.<th>
-                                <th>Def TO Rem.<th>
+                                <th>Down</th>
+                                <th>Distance</th>
+                                <th>Yardline</th>
+                                <th>Goal to Go</th>
+                                <th>Game Clock</th>
+                                <th>Pos TO Rem.</th>
+                                <th>Def TO Rem.</th>
                             </tr>
                             <tr>
-                                <th>{int(s_deet['down'])}<th>
-                                <th>{s_deet['ydstogo']}<th>
-                                <th>{yardline}<th>
-                                <th>{int(s_deet['goal_to_go'])}<th>
-                                <th>{game_clock}<th>
-                                <th>{int(s_deet['posteam_timeouts_remaining'])}<th>
-                                <th>{int(s_deet['defteam_timeouts_remaining'])}<th>
+                                <th>{int(s_deet['down'])}</th>
+                                <th>{s_deet['ydstogo']}</th>
+                                <th>{yardline}</th>
+                                <th>{int(s_deet['goal_to_go'])}</th>
+                                <th>{game_clock}</th>
+                                <th>{int(s_deet['posteam_timeouts_remaining'])}</th>
+                                <th>{int(s_deet['defteam_timeouts_remaining'])}</th>
                             </tr>
                         </table>
                     </div>
@@ -105,21 +109,21 @@ def get_random():
                         <h2> Prediction: </h2>
                         <table style="width:30%">
                             <tr>
-                                <th>Model Prediction<th>
-                                <th>Actual Outcome<th>
+                                <th>Model Prediction</th>
+                                <th>Actual Outcome</th>
                             </tr>
                             <tr>
-                                <th>{pred_dict[pos_deet['prediction']]}<th>
-                                <th>{actual_outcome}<th>
+                                <th>{pred_dict[pos_deet['prediction']]}</th>
+                                <th>{actual_outcome}</th>
                             </tr>
                         </table>
                         <h2> Previous Play: </h2>
                         <table style="width:50%">
                             <tr>
-                                <th>Desc<th>
+                                <th>Desc</th>
                             </tr>
                             <tr>
-                                <th>{pl_deet['desc']}<th>
+                                <th>{pl_deet['desc']}</th>
                             </tr>
                         </table>
                     </div>
