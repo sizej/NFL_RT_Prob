@@ -11,7 +11,11 @@ app = Flask(__name__)
 
 @app.route('/', methods = ['GET','POST'])
 def home_page():
-    g = 2018120913
+    global game
+    modeled_games = [201809060, 2018093012, 2018101405, 2018102102,
+                    2018111107, 2018120205, 2018120208, 2018120903,
+                    2018129013, 2018121600]
+    g = np.random.choice(modeled_games)
     game = Game(g)
     if not str(g) in os.listdir('bootstrap_app/static'):
         os.mkdir(f'bootstrap_app/static/{g}')
@@ -31,6 +35,7 @@ def home_page():
 
 @app.route('/next_play', methods = ['GET','POST'])
 def get_random():
+    global game
     game.get_next_play()
     g_deet = game.game_deets
     s_deet = game.sitch_deets
