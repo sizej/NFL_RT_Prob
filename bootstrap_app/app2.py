@@ -12,10 +12,11 @@ app = Flask(__name__)
 @app.route('/', methods = ['GET','POST'])
 def home_page():
     global game
-    modeled_games = [201809060, 2018093012, 2018101405, 2018102102,
+    modeled_games = [2018090600, 2018093012, 2018101405, 2018102102,
                     2018111107, 2018120205, 2018120208, 2018120903,
                     2018129013, 2018121600]
     g = np.random.choice(modeled_games)
+    # g = 2018129013
     game = Game(g)
     if not str(g) in os.listdir('bootstrap_app/static'):
         os.mkdir(f'bootstrap_app/static/{g}')
@@ -25,6 +26,8 @@ def home_page():
     <center>
     <h1> THE ELIMINATOR!!! </h1>
     <img src="https://img1.looper.com/img/gallery/these-things-happen-in-every-single-terminator-movie/intro-1564072959.jpg" >
+    <p /p>
+    <p /p>
     <p> <i>***Arnold does NOT ENDORSE the Eliminator! You should play anyway. </i></p>
     </body>
     <form action="/next_play" method='POST' >
