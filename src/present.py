@@ -1,19 +1,19 @@
-import pandas as pd 
-import numpy as np 
-import matplotlib.pyplot as plt 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 from cleaner_data import *
-from sklearn.ensemble import RandomForestClassifier as RFC 
+from sklearn.ensemble import RandomForestClassifier as RFC
 from sklearn.metrics import classification_report
 from football_func import *
 from pprint import pprint
-import pickle 
+import pickle
 
 plt.style.use('fivethirtyeight')
 
 def add_end_poss(df):
     out = pd.DataFrame()
     for game in df['game_id'].unique():
-        m0 = df['game_id'] == game 
+        m0 = df['game_id'] == game
         temp = df[m0].copy()
         drive_nums = temp['drive'].values
         ends = []
@@ -26,11 +26,11 @@ def add_end_poss(df):
         temp['end_of_poss'] = ends
         out = out.append(temp).copy()
     return out
-        
+
 
 if __name__ == '__main__':
     with open('data/predictions.pkl', 'rb') as f:
-        pred = pickle.load(f)   
+        pred = pickle.load(f)
     for i in range(10):
         pred.pick_random()
         pred.export_game()

@@ -1,10 +1,10 @@
-import pandas as pd 
-import numpy as np 
-import datetime as dt 
-from random import sample 
+import pandas as pd
+import numpy as np
+import datetime as dt
+from random import sample
 from team_dict import team_dict
-import matplotlib.pyplot as plt 
-import time 
+import matplotlib.pyplot as plt
+import time
 
 class PossessionStart(object):
 
@@ -56,7 +56,7 @@ class PossessionStart(object):
             return 1
         else:
             return 0
-    
+
     def tt_split(self, train_prop = 0.8):
         games = set(self.raw['game_id'].unique())
         size = int(train_prop * len(games))
@@ -77,7 +77,7 @@ class PossessionStart(object):
         self.modeling = self.raw[m0].copy()
         self.holdout = self.raw[m1].copy()
         self.train, self.test = self.tt_split()
-        
+
 
 class HistGames(object):
     '''
@@ -88,7 +88,7 @@ class HistGames(object):
         self.df = pd.read_csv(fname)
         self.teams = team_dict
         self.clean_up()
-    
+
     def clean_up(self):
         self.df['schedule_date'] = pd.to_datetime(self.df['schedule_date'])
         m0 = self.df['schedule_date'] > dt.datetime(2006,1,1)
@@ -123,7 +123,7 @@ class AllPlays(object):
         self.make_matrices()
 
     def make_matrices(self):
-        cols_to_exclude = ['game_id', 'play_id', 'drive', 'game_date', 'play_type', 'posteam', 'home_team', 
+        cols_to_exclude = ['game_id', 'play_id', 'drive', 'game_date', 'play_type', 'posteam', 'home_team',
                             'away_team', 'target_num', 'target_cat', 'ends_TD', 'ends_FG', 'ends_punt', 'ends_other']
         self.features = [c for c in self.train.columns if c not in cols_to_exclude]
         self.y_train = self.train['target_num'].values
@@ -133,7 +133,7 @@ class AllPlays(object):
         self.X_holdout = self.holdout[self.features].values
         self.y_holdout = self.holdout['target_num'].values
 
-    
+
     def get_LSTM_cols(self):
         fname = 'helpers/cols_all_plays_LSTM.txt'
         cols = []
@@ -172,7 +172,7 @@ class AllPlays(object):
         df2 = self.modeling[m1].copy()
         df2.drop(['game_id'], axis = 1, inplace = True)
         return df1, df2
-    
+
     def add_cols(self):
         self.data['target_cat'] = self.data.apply(lambda row: self.make_target_cat(row), axis = 1)
         self.data['target_num'] = self.data.apply(lambda row: self.make_target_num(row), axis = 1)
@@ -211,13 +211,13 @@ class AllPlays(object):
         if (1800 <= row['game_seconds_remaining'] <= 1920) or row['game_seconds_remaining'] <= 120:
             return 1
         else:
-            return 0    
+            return 0
 
     def pred_game(self, model):
         game = np.random.choice(self.holdout['game_id'].unique())
         m0 = self.holdout['game_id'] == game
         X_game = self.holdout[self.features][m0].values
-        y_game = self.holdout['target_num'][m0].values 
+        y_game = self.holdout['target_num'][m0].values
         y_pred = model.predict(X_game)
         y_probs = model.predict_proba(X_game)
         self.game_score = model.score(X_game, y_game)
@@ -238,12 +238,12 @@ class Predictions(object):
         self.model = model
         self._make_df()
         self._merge_desc()
-    
+
     def _predict(self):
         self.pred = self.model.predict(self.X)
         self.probs = self.model.predict_proba(self.X)
         self.model_score = self.model.score(self.X, self.y)
-    
+
     def _make_df(self):
         self._predict()
         cols = ['prediction', 'prob0', 'prob1', 'prob2', 'prob3']
@@ -262,8 +262,8 @@ class Predictions(object):
             for row in f:
                 idx = row.find('\n')
                 cols.append(row[:idx])
-        self.merge_cols = cols  
-    
+        self.merge_cols = cols
+
     def pick_random(self):
         self.random_game = np.random.choice(self.df['game_id'].unique())
         m0 = self.df['game_id'] == self.random_game
@@ -271,7 +271,7 @@ class Predictions(object):
         self.play_num = 0
         self.columns = list(self.df.columns)
         self._set_display()
-    
+
     def _set_display(self):
         self.disp = ['home_team', 'away_team', 'posteam', 'posteam_score', 'defteam_score',
                 'spread', 'total', 'pos_fave', 'pos_EP_total', 'def_EP_total',
@@ -308,7 +308,7 @@ class Predictions(object):
         self.play_num += 1
         self.last_play_deets = {k: str(v) for k, v in self.last_play_deets.items()}
         return self.last_play_deets
-    
+
 
     def whole_game(self):
         for i in range(self.game.shape[0]):
@@ -339,7 +339,7 @@ class Game(object):
         self._create_tables()
         self._create_prob_plot()
         self.play_num += 1
-    
+
     def _set_table_cols(self):
         self.game_cols = ['home_team', 'away_team', 'posteam', 'pos_fave', 'spread', 'total', 'posteam_score', 'defteam_score']
         self.sitch_cols = ['down', 'ydstogo', 'yardline_100', 'goal_to_go', 'game_seconds_remaining', 'posteam_timeouts_remaining', 'defteam_timeouts_remaining']
@@ -353,7 +353,7 @@ class Game(object):
         self.play_deets = self.plays.loc[self.play_num, self.sitch_cols].to_dict()
         self.poss_deets = self.plays.loc[self.play_num, self.poss_cols].to_dict()
         return
-    
+
     def _create_prob_plot(self):
         probs = self.plays.loc[self.play_num, self.prob_cols]
         # fname = f'web_app/static/{self.game}/play_{self.play_num}.jpeg'
