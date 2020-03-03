@@ -1,0 +1,204 @@
+body {
+  background: #EDEDED;
+}
+
+.main-color {
+  background-color: #213578;
+  border-color: #213578;
+  opacity: 0.9;
+}
+
+.main-font {
+  color: #FFF !important;
+}
+
+.margin-top {
+  margin-top: 40px;
+}
+
+.margin-tb {
+  margin: 20px 0 80px 0;
+}
+
+/* .button-style {
+   border-top: 1px solid #0014eb;
+   background: #f77a2d;
+   background: -webkit-gradient(linear, left top, left bottom, from(#2c27d6), to(#f77a2d));
+   background: -webkit-linear-gradient(top, #2c27d6, #f77a2d);
+   background: -moz-linear-gradient(top, #2c27d6, #f77a2d);
+   background: -ms-linear-gradient(top, #2c27d6, #f77a2d);
+   background: -o-linear-gradient(top, #2c27d6, #f77a2d);
+   padding: 10px 29px;
+   -webkit-border-radius: 40px;
+   -moz-border-radius: 40px;
+   border-radius: 40px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   outline: none;
+   text-decoration: none;
+   color: white;
+   font-size: 19px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+  }
+
+.button-style:hover {
+   border-top-color: #f77a2d;
+   background: #0e12f2;
+   color: #ccc;
+}
+
+.button-style:active {
+   border-top-color: #233eed;
+   background: #233eed;
+  } */
+
+.button-style {
+  background: #213578;
+  background-image: -webkit-linear-gradient(top, #213578, #4D62A8);
+  background-image: -moz-linear-gradient(top, #213578, #4D62A8);
+  background-image: -ms-linear-gradient(top, #213578, #4D62A8);
+  background-image: -o-linear-gradient(top, #213578, #4D62A8);
+  background-image: linear-gradient(to bottom, #213578, #4D62A8);
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  color: #FFFFFF;
+  font-family: Open Sans;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+}
+
+.button-style:hover {
+  border: solid #FFFFFF 1px;
+  background: #4D62A8;
+  background-image: -webkit-linear-gradient(top, #4D62A8, #4D62A8);
+  background-image: -moz-linear-gradient(top, #4D62A8, #4D62A8);
+  background-image: -ms-linear-gradient(top, #4D62A8, #4D62A8);
+  background-image: -o-linear-gradient(top, #4D62A8, #4D62A8);
+  background-image: linear-gradient(to bottom, #4D62A8, #4D62A8);
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+.table-style {
+  border: 2px solid #000000;
+  background-color: #4A4A4A;
+  width: 60%;
+  height: auto;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.table-style td, .table-style th {
+  border: 1px solid #4A4A4A;
+  padding: 6px 5px;
+}
+
+.table-style tbody td {
+  font-size: 14px;
+  color: #E6E6E6;
+}
+
+.table-style tr:nth-child(even) {
+  background: #888888;
+}
+
+table.table-style thead {
+  background: #000000;
+  border-bottom: 3px solid #000000;
+}
+
+.table-style thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #E6E6E6;
+  text-align: center;
+  border-left: 2px solid #4A4A4A;
+}
+
+.table-style thead th:first-child {
+  border-left: none;
+}
+
+.table-style tfoot td {
+  font-size: 12px;
+}
+
+table th {
+  background-color: #213578;
+  color: #FFF;
+  letter-spacing: 1.5px;
+}
+
+table td, table th {
+  font-size: 30px;
+  letter-spacing: .7px;
+}
+
+table th, table td {
+  text-align: center;
+}
+
+table tbody {
+  background-color: #F9F9F9;
+}
+
+.game-columns {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  grid-template-areas: "game graph possession";
+}
+
+.game-container {
+  grid-area: game;
+}
+
+.possession-container {
+  grid-area: possession;
+}
+
+.graph-container {
+  grid-area: graph;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.graph-container img{
+  /* width: 120%; */
+}
+
+.vertical-table {
+  width: 30%;
+}
+
+.pred-play__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: -20px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -80px;
+}
+
+.margin-right {
+  margin-right: 1.2em;
+}
