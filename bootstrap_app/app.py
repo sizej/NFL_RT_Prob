@@ -9,30 +9,35 @@ from app_func import pred_dict
 
 app = Flask(__name__)
 
-g = 2018101405
-game = Game(g)
-if not str(g) in os.listdir('bootstrap_app/static'):
-    os.mkdir(f'bootstrap_app/static/{g}')
+
 
 
 @app.route('/', methods = ['GET','POST'])
 def home_page():
+    global game
+    g = 2018101405
+    game = Game(g)
+    if not str(g) in os.listdir('bootstrap_app/static'):
+        os.mkdir(f'bootstrap_app/static/{g}')
     game.play_num = 0
     return f'''{render_template('index.html')}
     <body>
     <center>
     <h1> THE ELIMINATOR!!! </h1>
-    <img src="https://img1.looper.com/img/gallery/these-things-happen-in-every-single-terminator-movie/intro-1564072959.jpg" style="padding-bottom:1em">
-    <p> <i>***Arnold does NOT ENDORSE the Eliminator! You should play anyway. </i></p>
+    <img src="https://media.giphy.com/media/TgQCVpkQSZ81G/giphy.gif" style="width:1200px;height:600px;" style="padding-bottom:1em">
+    <p>  </p>
+    <p>  </p>
+    <p> <i>***Dominic Toretto does NOT ENDORSE the Eliminator! You should play anyway. </i></p>
     </body>
     <form action="/next_play" method='POST' >
-        <input type="submit" value="Let's Play!" style="height:50px;width:200px"/>
+        <input type="submit" value="Let's Play!" class="button-style"/>
     </form>
     </center>
     '''
 
 @app.route('/next_play', methods = ['GET','POST'])
 def get_random():
+    global game
     game.get_next_play()
     g_deet = game.game_deets
     s_deet = game.sitch_deets

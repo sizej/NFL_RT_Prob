@@ -368,12 +368,12 @@ class Game(object):
             colors = ['r' if x == max(probs) else 'b' for x in probs]
         ax.barh(range(4), probs, color = colors, alpha = 0.8)
         ax.set_yticks(np.arange(4))
-        ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'])
+        ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'], fontsize = 24)
         ax.set_xticks([])
         ax.set_xlim(0, max(probs) + .15)
-        ax.set_title('Real-Time Outcome Probability')
+        ax.set_title('Real-Time Outcome Probability', fontsize = 36)
         for i, p in enumerate(probs):
-            ax.annotate(f'{p*100:0.1f}%', (p + 0.005, i))
+            ax.annotate(f'{p*100:0.1f}%', (p + 0.005, i), fontsize = 20)
         plt.tight_layout(pad = 3)
         plt.savefig(f'bootstrap_app/{self.fname}')
         plt.close()
