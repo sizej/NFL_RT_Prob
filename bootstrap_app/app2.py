@@ -13,8 +13,7 @@ app = Flask(__name__)
 def home_page():
     global game
     modeled_games = [2018090600, 2018093012, 2018101405, 2018102102,
-                    2018111107, 2018120205, 2018120208, 2018120903,
-                    2018129013, 2018121600]
+                    2018111107, 2018120205, 2018120208, 2018120903, 2018121600]
     g = np.random.choice(modeled_games)
     # g = 2018129013
     game = Game(g)
@@ -25,10 +24,10 @@ def home_page():
     <body>
     <center>
     <h1> THE ELIMINATOR!!! </h1>
-    <img src="https://img1.looper.com/img/gallery/these-things-happen-in-every-single-terminator-movie/intro-1564072959.jpg" >
+    <img src="https://media.giphy.com/media/TgQCVpkQSZ81G/giphy.gif" style="width:1200px;height:600px;" /img>
     <p /p>
     <p /p>
-    <p> <i>***Arnold does NOT ENDORSE the Eliminator! You should play anyway. </i></p>
+    <p> <i>***Dominic Toretto does NOT ENDORSE the Eliminator! You should play anyway. </i></p>
     </body>
     <form action="/next_play" method='POST' >
         <input type="submit" value="Let's Play!" style="height:50px;width:200px"/>
@@ -144,4 +143,5 @@ def get_random():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
-    
+
+# https://img1.looper.com/img/gallery/these-things-happen-in-every-single-terminator-movie/intro-1564072959.jpg
