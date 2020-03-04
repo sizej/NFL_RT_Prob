@@ -17,7 +17,7 @@ if __name__ == '__main__':
     model_score = rf.score(plays.X_test, plays.y_test)
     print(f'RF accuracy: {model_score:0.4f}')
 
-    Plot feature importances
+    # Plot feature importances
     idx = np.argsort(rf.feature_importances_)[::-1]
     plot_feat_imp(idx, plays.features, rf.feature_importances_, n = 10, fname = 'images/rf3_feat_imp.jpeg')
 

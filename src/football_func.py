@@ -133,10 +133,10 @@ def plot_feat_imp(idx, features, feat_importances,  n = 5, fname = 'images/test.
     '''
     labels = np.array(features)[idx[:n]]
     fig, ax = plt.subplots(1,1, figsize = (10,5))
-    ax.barh(range(n), feat_importances[idx[:n]], color = 'b', alpha = 0.85)
+    ax.barh(range(n), feat_importances[idx[:n]][::-1], color = 'b', alpha = 0.85)
     # ax.set_xticklabels(labels)
     ax.set_title('Feature Importance')
-    plt.yticks(ticks = range(n), labels = labels)
+    plt.yticks(ticks = range(n), labels = labels[::-1])
     plt.tight_layout(pad = 1)
     plt.savefig(fname)
     plt.close()

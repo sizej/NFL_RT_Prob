@@ -363,16 +363,16 @@ class Game(object):
         fig, ax = plt.subplots(figsize = (10,5))
         if self.poss_deets['end_of_poss'] == 1:
             c_dict = {'TD': 0, 'FG': 1, 'punt': 2, 'other': 3}
-            colors = ['g' if x == c_dict[self.poss_deets['target_cat']] else 'b' for x in range(4)]
+            colors = ['g' if x == c_dict[self.poss_deets['target_cat']] else 'b' for x in range(4)][::-1]
         else:
-            colors = ['r' if x == max(probs) else 'b' for x in probs]
-        ax.barh(range(4), probs, color = colors, alpha = 0.8)
+            colors = ['r' if x == max(probs) else 'b' for x in probs][::-1]
+        ax.barh(range(4), probs[::-1], color = colors, alpha = 0.8)
         ax.set_yticks(np.arange(4))
-        ax.set_yticklabels(['TD', 'FG', 'Punt', 'Other'], fontsize = 24)
+        ax.set_yticklabels(['#1: TD', '#2: FG', '#3: Punt', '#4: Other'][::-1], fontsize = 24)
         ax.set_xticks([])
         ax.set_xlim(0, max(probs) + .15)
         ax.set_title('Real-Time Outcome Probability', fontsize = 36)
-        for i, p in enumerate(probs):
+        for i, p in enumerate(probs[::-1]):
             ax.annotate(f'{p*100:0.1f}%', (p + 0.005, i), fontsize = 20)
         plt.tight_layout(pad = 3)
         plt.savefig(f'bootstrap_app/{self.fname}')
