@@ -15,11 +15,11 @@ app = Flask(__name__)
 @app.route('/', methods = ['GET','POST'])
 def home_page():
     global game
-    modeled_games = [2018090600, 2018093012, 2018101405, 2018102102,
-                    2018111107, 2018120205, 2018120208, 2018120903, 2018121600]
-    g = np.random.choice(modeled_games)
+    # modeled_games = [2018090600, 2018093012, 2018101405, 2018102102,
+    #                 2018111107, 2018120205, 2018120208, 2018120903, 2018121600]
+    # g = np.random.choice(modeled_games)
+    g = 2018120913
     game = Game(g)
-    # g = 2018129013
     if not str(g) in os.listdir('bootstrap_app/static'):
         os.mkdir(f'bootstrap_app/static/{g}')
     game.play_num = 0
