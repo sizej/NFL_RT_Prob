@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     # Plot feature importances
     idx = np.argsort(rf.feature_importances_)[::-1]
-    plot_feat_imp(idx, plays.features, rf.feature_importances_, n = 10, fname = 'images/rf3_feat_imp.jpeg')
+    # plot_feat_imp(idx, plays.features, rf.feature_importances_, n = 10, fname = 'images/rf3_feat_imp.jpeg')
 
     holdout_score = rf.score(plays.X_holdout, plays.y_holdout)
     y_holdout_pred = rf.predict(plays.X_holdout)
