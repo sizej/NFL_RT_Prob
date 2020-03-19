@@ -42,7 +42,7 @@ if __name__ == '__main__':
     #pprint(report)
 
     feat_imp_idx = np.argsort(rf.feature_importances_)[::-1]
-    plot_feat_imp(feat_imp_idx, features, rf.feature_importances_, 7, 'images/rf2.jpeg')
+    plot_feat_imp(feat_imp_idx, features, rf.feature_importances_, 10, 'images/rf2.jpeg')
     
     # Attempt at partial dependence -- failed.....
     # target_dict = {'TD': 0, 'FG': 1, 'punt': 2, 'other': 3}
