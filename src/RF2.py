@@ -42,10 +42,10 @@ if __name__ == '__main__':
     #pprint(report)
 
     feat_imp_idx = np.argsort(rf.feature_importances_)[::-1]
-    # plot_feat_imp(feat_imp_idx, features, rf.feature_importances_, 7, 'images/rf2.jpeg')
+    plot_feat_imp(feat_imp_idx, features, rf.feature_importances_, 7, 'images/rf2.jpeg')
     
     # Attempt at partial dependence -- failed.....
-    target_dict = {'TD': 0, 'FG': 1, 'punt': 2, 'other': 3}
-    target = [target_dict[x] for x in y_train]
-    for i in range(4):
-        plot_pd(rf, X_train, features = feat_imp_idx[:7], feature_names = np.array(features)[feat_imp_idx[:7], target = i)
+    # target_dict = {'TD': 0, 'FG': 1, 'punt': 2, 'other': 3}
+    # target = [target_dict[x] for x in y_train]
+    # for i in range(4):
+    #     plot_pd(rf, X_train, features = feat_imp_idx[:7], feature_names = np.array(features)[feat_imp_idx[:7], target = i)
